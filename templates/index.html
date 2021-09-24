@@ -20,7 +20,123 @@
 
     <title>Heart Muscle</title>
 </head>
+
+<script>
+    $(document).ready(function () {
+        showDiary();
+    });
+
+    function writeDiary() {
+        let name = $('#name').val();
+        let title = $('#title').val();
+        let diary = $('#diary').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/diary",
+            dataType: "json",
+            data: {name_give: name, title_give: title, diary_give: diary},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
+            }
+        })
+    }
+
+    function showDiary() {
+        $.ajax({
+            type: "GET",
+            url: "/diary",
+            data: {},
+            success: function (response) {
+                let diaries = response['diary_list']
+                for (let i = 0; i < diaries.length; i++) {
+                    let title = diaries[i]['title']
+                    let name = diaries[i]['name']
+                    // let diary = diaries[i]['diary']
+                    // 아직 넣는 부분 없음
+
+                    let temp_html = `<tr>
+                                    <td>98</td>
+                                    <td><a href="#">${title}</a></td>
+                                    <td>${name}</td>
+                                    <td>2021-00-00</td>
+                                    <td>89</td>
+                                </tr>`
+                    $('#diary_list').append(temp_html)
+                }
+            }
+        })
+    }
+
+</script>
+
+<style>
+    .diary_form {
+        width: 700px;
+        margin: 50px auto 20px auto;
+    }
+
+    .btn {
+        display: block;
+        margin: auto auto 50px auto;
+    }
+
+    .diary_list {
+        width: 800px;
+        margin: auto;
+    }
+</style>
+
 <body>
-Heart Muscle의 메인 페이지입니다.
+<div class="diary_form">
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">이름</span>
+        <input id="name" type="text" class="form-control" placeholder="이름을 입력하세요" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">제목</span>
+        <input id="title" type="text" class="form-control" placeholder="제목을 입력하세요" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <textarea id="diary" class="form-control" aria-label="With textarea" placeholder="내용을 입력하세요"></textarea>
+    </div>
+
+</div>
+
+<button onclick="writeDiary()" type="button" class="btn btn-secondary" class="btn">두근득근 일지 작성</button>
+
+<div class="diary_list">
+
+    <h2>두근득근일지</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>날짜</th>
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody id="diary_list">
+        <tr>
+            <td>98</td>
+            <td><a href="#">두근득근</a></td>
+            <td>김이박</td>
+            <td>2021-09-24</td>
+            <td>89</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
+
+
 </html>
