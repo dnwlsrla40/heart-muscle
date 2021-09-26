@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- 외부 css 파일 불러오기 -->
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/movie.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -20,37 +20,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+
     <title>Heart-Muscle Movie Page</title>
 </head>
 
-<script>
-    // $(document).ready(function () {
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "/test?q=코코몽",
-    //         data: {},
-    //         success: function (res) {
-    //             alert("hello")
-    //             console.log(res)
-    //         }
-    //     })
-    // })
-
-    function search(){
-        let query = $('#query').val()
-        $.ajax({
-            type: "GET",
-            url: "/movies?q=" + query,
-            data: {},
-            success: function (res) {
-                console.log(res)
-            }
-        })
-    }
-</script>
-
 <body>
-    검색어 : <input type="text" id="query">
-    <button onclick="search()">제출</button>
+<div class="jumbotron" id="test">
+    <h1 class="display-4">당신이 원하는 홈트 영상을 검색해보세요!</h1>
+    <p class="lead"></p>
+    <hr class="my-4">
+    <p>검색어 : <input type="text" id="query"></p>
+    <p class="lead">
+        <a class="btn btn-outline-primary" onclick="search1()" role="button">검색</a>
+    </p>
+</div>
+
+
+<div class="card-columns" id="card-box">
+</div>
+
+<!-- 외부 js 파일 불러오기 -->
+<script type="text/javascript" src="../static/js/movie.js"></script>
 </body>
 </html>
