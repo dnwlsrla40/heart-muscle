@@ -55,17 +55,16 @@
                         let like = logs[i]['like']
 
                         let temp_html = `<tr>
-                                            <th scope="row">${i+1}</th>
-                                            <td>${date}</td>
-                                            <td>${name}</td>
-                                            <td>${title}</td>
-                                            <td>${content}</td>
-                                            <td>
-                                                <a href="#" target="_blank" class="star-name title is-4">좋아요: ${like}</a>
-                                                <a href="#" onclick="likeStar('${name}')" class="card-footer-item has-text-info"><span class="icon"><i class="fas fa-thumbs-up"></i></span></a>
-                                            </td>
-                                            <td></td>
-                                        </tr>`
+                                             <th scope="row">${i+1}</th>
+                                             <td>${date}</td>
+                                             <td>${name}</td>
+                                             td>${title}</td>
+                                              <td><a onclick="" href="/detailed_post">${content}<a></td>
+                                              <td>
+                                                  <a href="#" target="_blank" class="star-name title is-4">좋아요: ${like}</a>
+                                                  <a href="#" onclick="likeStar('${name}')" class="card-footer-item has-text-info"><span class="icon"><i class="fas fa-thumbs-up"></i></span></a>
+                                              </td>
+                                          </tr>`
                         $('#log_table').append(temp_html)
                     }
                 }
@@ -89,6 +88,10 @@
     <style>
         #inputGroup-sizing-default {
             padding-right: 20px;
+        }
+
+        a{
+            display: block;
         }
     </style>
 </head>

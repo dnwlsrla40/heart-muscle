@@ -61,17 +61,15 @@ def read_reviews():
     logs = list(db.heart_log.find({}, {'_id': False}))
     return jsonify({'all_logs': logs})
 
+@app.route('/detailed_post')
+def detailed_post_page():
+    return render_template('detailed_post_page.html')
 
 @app.route('/detailed_post/post', methods=['GET'])
 def show_detail_page():
     one_log = db.heart_log.find_one({'name':'김아무개'}, {'_id':False})
     print(one_log)
     return jsonify({'one_log': one_log})
-
-@app.route('/detailed_post')
-def detailed_post_page():
-    return render_template('detailed_post_page.html')
-
 
 if __name__ == 'main':
     app.run('0.0.0.0', port=5000, debug=True)
