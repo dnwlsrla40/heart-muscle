@@ -20,17 +20,21 @@ def write_diary():
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
 
-    doc = {
-        'writer': writer_receive,
-        'title': title_receive,
-        'content': content_receive,
-        'created_at': time.strftime('%Y-%m-%d', time.localtime(time.time())),
-        'views': 0,
-        'count': db.dbMuscle.count()+1
-    }
+    if writer_receive == "" or title_receive == "" or content_receive == "":
+        return jsonify({'msg': '빈칸에 내용을 입력해주세요!'})
 
-    db.dbMuscle.insert_one(doc)
-    return jsonify({'msg': '저장 완료!'})
+    else:
+        doc = {
+            'writer': writer_receive,
+            'title': title_receive,
+            'content': content_receive,
+            'created_at': time.strftime('%Y-%m-%d', time.localtime(time.time())),
+            'views': 0,
+            'count': db.dbMuscle.count() + 1
+        }
+
+        db.dbMuscle.insert_one(doc)
+        return jsonify({'msg': '저장 완료!'})
 
 @app.route('/diary', methods=['GET'])
 def read_diary():
