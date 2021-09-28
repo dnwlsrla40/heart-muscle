@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+            crossorigin="anonymous"></script>
+
+    <!--    Fontawesome library-->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <title>득근일지</title>
+        <script>
+            $(function () {
+                show_detail_page();
+            });
+
+            {#function saveLog() {#}
+            {#    let name = $('#name').val()#}
+            {#    let title = $('#title').val()#}
+            {#    let content = $('#content').val()#}
+            {##}
+            {#    $.ajax({#}
+            {#        type: "POST",#}
+            {#        url: "/log",#}
+            {#        data: {name_give: name, title_give: title, content_give: content},#}
+            {#        success: function (response) {#}
+            {#            alert(response["msg"]);#}
+            {#            window.location.reload();#}
+            {#        }#}
+            {#    })#}
+            {##}
+
+            function show_detail_page() {
+                $.ajax({
+                    type: "GET",
+                    url: "/detailed_post/post",
+                    data: {},
+                    success: function (response) {
+                        let logs = response['all_logs'];
+                        {#for (let i = 0; i < logs.length; i++){#}
+                        {#    let date = logs[i]['date']#}
+                        {#    let writer = logs[i]['name']#}
+                        {#    let title = logs[i]['title']#}
+                        {#    let content = logs[i]['content']#}
+                            {#let like = logs[i]['like']#}
+
+                            let date = logs[1]['date']
+                            let writer = logs[1]['name']
+                            let title = logs[1]['title']
+                            let content = logs[1]['content']
+
+                            let temp_html = `<div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="badge badge-primary">이름</span>
+                                                        ${writer}
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="badge badge-primary">제목</span>
+                                                        ${title}
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="badge badge-primary">작성일</span>
+                                                        ${date}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <form class="was-validated">
+                                                <div class="mb-3">
+                                                    <label for="validationTextarea"><span class="badge badge-primary">내용</span></label>
+                                                    <textarea readonly rows="10" class="form-control is-invalid" id="validationTextarea" placeholder="내용"
+                                                              required>${content}</textarea>
+                                                    <div class="invalid-feedback">
+
+                                                    </div>
+                                                </div>
+                                            </form>`
+                            $('#read-box').append(temp_html)
+                        }
+
+                })
+            }
+
+            {#function likeStar(name) {#}
+            {#    $.ajax({#}
+            {#        type: 'POST',#}
+            {#        url: '/api/like',#}
+            {#        data: {name_give:name},#}
+            {#        success: function (response) {#}
+            {#            alert(response['msg']);#}
+            {#            window.location.reload()#}
+            {#        }#}
+            {#    });#}
+            {##}
+
+        </script>
+
+    <style>
+        .wrap {
+            display: block;
+            {#background-color: blue;#}
+            padding: 50px;
+            width: 700px;
+            margin: auto;
+        }
+
+        {##top-boxes {#}
+        {#    border: none;#}
+        {#    border-color: transparent;#}
+        {#    box-shadow: none;#}
+
+        {##}
+        .form-control{
+            border: none;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        .input-group-text{
+            background-color: pink;
+            color: white;
+        }
+
+        #text-box{
+        border: solid pink;
+    }
+        .badge-primary{
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div id="read-box"></div>
+{#        <div>#}
+{#            <input type=submit value="수정" onclick="diary_update()">#}
+{#            <input type=button value="목록" onclick="location.href='index.html'"/>#}
+            <button type="submit" class="btn btn-outline-danger">수정</button>
+            <button type="button" class="btn btn-outline-danger">목록</button>
+        </div>
+    </div>
+
+{#    <div class="box">#}
+{#        <div>#}
+{#            <div class="input-group mb-3">#}
+{#                <div class="input-group-prepend">#}
+{#                    <span class="input-group-text">이름</span>#}
+{#                </div>#}
+{#                <input type="text" class="form-control" id="name" placeholder="이름" aria-label="Username"#}
+{#                       aria-describedby="basic-addon1">#}
+{#            </div>#}
+{#            <div class="input-group mb-3">#}
+{#                <div class="input-group-prepend">#}
+{#                    <span class="input-group-text">제목</span>#}
+{#                </div>#}
+{#                <input type="text" class="form-control" id="title" placeholder="제목" aria-label="Username"#}
+{#                       aria-describedby="basic-addon1">#}
+{#            </div>#}
+{#            <div class="input-group mb-3">#}
+{#                <div class="input-group-prepend">#}
+{#                    <span class="input-group-text">작성일</span>#}
+{#                </div>#}
+{#                <input type="text" class="form-control" id="date" placeholder="작성일" aria-label="Username"#}
+{#                       aria-describedby="basic-addon1">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{##}
+{#        <form class="was-validated">#}
+{#            <div class="mb-3">#}
+{#                <label for="validationTextarea">내용</label>#}
+{#                <textarea readonly rows="10" class="form-control is-invalid" id="validationTextarea" placeholder="내용"#}
+{#                          required></textarea>#}
+{#                <div class="invalid-feedback">#}
+{#                    내용을 입력하세요.#}
+{#                </div>#}
+{#            </div>#}
+{#        </form>#}
+{#        <div>#}
+{#            <input type=submit value="수정" onclick="diary_update()">#}
+{#            <input type=button value="목록" onclick="location.href='index.html'"/>#}
+{#            <button type="submit" class="btn btn-outline-danger">수정</button>#}
+{#            <button type="button" class="btn btn-outline-danger">목록</button>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+</body>
+
+
+
+
+
+
+{#<div class="content-identity pull-right">#}
+{#            <div class="content-identity-count"><i class="fa fa-comment"></i> 3</div>#}
+{#                <div class="content-identity-count"><i class="fa fa-eye"></i> 188</div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="content-container clearfix">#}
+{#            <div id="content-body" class="panel-body content-body pull-left">#}
+{#                <div class="content-tags">#}
+{#                    <span class="list-group-item-text article-id">#1059391</span>#}
+{#	<a href="/articles/life" class="list-group-item-text item-tag label label-info"><i class="fa fa-comments"></i> 사는얘기</a>#}
+{##}
+{##}
+{#			<a href="/articles/tagged/%EA%B8%B0%EB%B3%B8%EC%A7%80%EC%8B%9D" class="list-group-item-text item-tag label label-gray ">기본지식</a>#}
+{#			<a href="/articles/tagged/it" class="list-group-item-text item-tag label label-gray ">it</a>#}
+{#			<a href="/articles/tagged/it%EA%B8%B0%EB%B3%B8" class="list-group-item-text item-tag label label-gray ">it기본</a>#}
+{#                </div>#}
+{#                <h2 class="panel-title">#}
+{#                    IT분야 기본 지식을 공부하고 싶어요#}
+{#                </h2>#}
+{#                <hr/>#}
+{#                <article class="content-text" itemprop="articleBody">#}
+{#                    	<p>안녕하세요.</p><p><br /></p><p>취업에 있어서 기본적으로 갖추어야하는  IT지식을</p><p>공부하기 위해서 추천해주실 만한  강의나 책이 있을까요?</p><p>(데이터베이스, 네트워크, HTTP 등) </p>#}
+{#                </article>#}
+{##}
+{#            </div>#}
+
+</html>
