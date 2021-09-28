@@ -46,7 +46,7 @@
                     url: "/detailed_post/post",
                     data: {},
                     success: function (response) {
-                        let logs = response['all_logs'];
+                        let logs = response['one_log'];
                         {#for (let i = 0; i < logs.length; i++){#}
                         {#    let date = logs[i]['date']#}
                         {#    let writer = logs[i]['name']#}
@@ -54,10 +54,10 @@
                         {#    let content = logs[i]['content']#}
                             {#let like = logs[i]['like']#}
 
-                            let date = logs[1]['date']
-                            let writer = logs[1]['name']
-                            let title = logs[1]['title']
-                            let content = logs[1]['content']
+                            let date = logs['date']
+                            let writer = logs['name']
+                            let title = logs['title']
+                            let content = logs['content']
 
                             let temp_html = `<div>
                                                 <div class="input-group mb-3">
