@@ -11,14 +11,14 @@ from datetime import datetime
 
 
 # HTML을 주는 부분
-@app.route('/log')
+@app.route('/')
 def home():
     return render_template('heart_log.html')
 
 
 # 전체 DB 저장
 @app.route('/log', methods=['POST'])
-def save_log():
+def write_review():
     name_receive = request.form['name_give']
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
@@ -57,9 +57,9 @@ def like_star():
 
 # 불러오기
 @app.route('/log', methods=['GET'])
-def show_log():
+def read_reviews():
     logs = list(db.heart_log.find({}, {'_id': False}))
-    return jsonify({'all_logs': logs}),
+    return jsonify({'all_logs': logs})
 
 
 @app.route('/detailed_post/post', methods=['GET'])
