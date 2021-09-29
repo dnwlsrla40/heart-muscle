@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -8,15 +8,25 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbMuscle
 
-@app.route('/movie')
-def movie():
-    return render_template('movie.html')
-
 ## HTML 화면 보여주기
 @app.route('/')
 def homework():
-    return render_template('index.html')
+    return render_template('main.html')
 
+@app.route('/movie', methods=['GET'])
+def movie():
+    part = request.args.get('part')
+    print(part)
+    return render_template('movie.html', part=part)
+
+## movie화면 이동 및 클릭한 데이터값 전달
+@app.route('/movie', methods=['POST'])
+def get_part():
+    part = request.form['part']
+    print("POST: " + part)
+    return redirect(url_for('movie',  part=part))
+
+## youtube API 이용
 @app.route('/movies', methods=['GET'])
 def test():
     # q = "홈트 "
@@ -42,6 +52,13 @@ def test():
         "items": jsonized_data["items"]
     }
     return jsonify(comments_list)
+
+## HTML 화면 보여주기
+@app.route('/movie-detail', methods=['POST'])
+def movie_detail():
+    videoId = request.form["videoId"]
+    print(videoId)
+    return render_template('movie-detail.html', videoId=videoId)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -23,10 +23,14 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
+    <script type="application/javascript" src="../static/js/includeHTML.js"></script>
+
     <title>Heart Muscle Main Page</title>
 </head>
 <body>
 <div id="wrap">
+    <header include-html="./common/header.html"></header>
+    <script>includeHTML();</script>
     <p class="title">당신이 운동하고 싶은 부위는?</p>
     <div id="exer-box">
         <div id="nav-box">
@@ -37,7 +41,7 @@
                         aria-expanded="false">
                     팔
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu" id="arm-menu">
                     <a class="dropdown-item" href="#">이두</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <a class="dropdown-item" href="#">Something else here</a>
@@ -67,7 +71,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Another action</a>K
                     <a class="dropdown-item" href="#">Something else here</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Separated link</a>
@@ -99,5 +103,7 @@
         </div>
     </div>
 </div>
+
+<script type="application/javascript" src="../static/js/main.js"></script>
 </body>
 </html>
