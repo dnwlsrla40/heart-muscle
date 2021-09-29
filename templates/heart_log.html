@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+            crossorigin="anonymous"></script>
+
+<!--    Fontawesome library-->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <title>득근일지</title>
+    <script>
+        $(function () {
+            showLog();
+        });
+
+        function saveLog() {
+            let name = $('#name').val()
+            let title = $('#title').val()
+            let content = $('#content').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/log",
+                data: {name_give: name, title_give: title, content_give: content},
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+            })
+        }
+
+        function showLog() {
+            $.ajax({
+                type: "GET",
+                url: "/log",
+                data: {},
+                success: function (response) {
+                    let logs = response['all_logs'];
+                    for (let i = 0; i < logs.length; i++){
+                        let date = logs[i]['date']
+                        let name = logs[i]['name']
+                        let title = logs[i]['title']
+                        let content = logs[i]['content']
+                        let like = logs[i]['like']
+
+                        let temp_html = `<tr>
+                                             <th scope="row">${i+1}</th>
+                                             <td>${date}</td>
+                                             <td>${name}</td>
+                                             td>${title}</td>
+                                              <td><a onclick="" href="/detailed_post">${content}<a></td>
+                                              <td>
+                                                  <a href="#" target="_blank" class="star-name title is-4">좋아요: ${like}</a>
+                                                  <a href="#" onclick="likeStar('${name}')" class="card-footer-item has-text-info"><span class="icon"><i class="fas fa-thumbs-up"></i></span></a>
+                                              </td>
+                                          </tr>`
+                        $('#log_table').append(temp_html)
+                    }
+                }
+            })
+        }
+
+        function likeStar(name) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/like',
+                data: {name_give:name},
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.reload()
+                }
+            });
+        }
+
+    </script>
+
+    <style>
+        #inputGroup-sizing-default {
+            padding-right: 20px;
+        }
+
+        a{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">두근득근 일지</h1>
+            <p class="lead">오늘은 얼마나 득근을 했을까?</p>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">이름</span>
+                </div>
+                <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요" aria-label="Username"
+                       aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">제목</span>
+                </div>
+                <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" aria-label="Username"
+                       aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">내용</span>
+                </div>
+                <textarea class="form-control" id="content" placeholder="내용을 입력하세요" aria-label="With textarea"></textarea>
+            </div>
+            <button onclick="saveLog()" type="button" class="btn btn-secondary">두근득근 일지 작성</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">작성시간</th>
+            <th scope="col">작성자</th>
+            <th scope="col">제목</th>
+            <th scope="col">내용</th>
+            <th scope="col">추천</th>
+            <th scope="col">조회수</th>
+        </tr>
+        </thead>
+        <tbody id="log_table">
+
+        </tbody>
+
+    </table>
+</body>
+</html>
