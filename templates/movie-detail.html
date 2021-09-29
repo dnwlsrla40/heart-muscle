@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- 외부 css 파일 불러오기 -->
-    <link rel="stylesheet" type="text/css" href="../static/css/movie.css">
+    <!-- 외부 CSS 파일 반영 -->
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+
+    <!--<iframe src="./common/header.html"></iframe>-->
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -20,26 +22,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-
-    <title>Heart-Muscle Movie Page</title>
+    <title>Title</title>
 </head>
-
 <body>
-<div class="jumbotron" id="test">
-    <h1 class="display-4">당신이 원하는 홈트 영상을 검색해보세요!</h1>
-    <p class="lead">{{ part }}</p>
-    <hr class="my-4">
-    <p>검색어 : <input type="text" id="query"></p>
-    <p class="lead">
-        <a class="btn btn-outline-primary" onclick="search1()" role="button">검색</a>
-    </p>
+<div id="youtube-box">
+    <iframe width="560" height="390" src="https://www.youtube.com/embed/gMaB-fG4u4g" title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
-
-
-<div class="card-columns" id="card-box">
-</div>
-
-<!-- 외부 js 파일 불러오기 -->
-<script type="text/javascript" src="../static/js/movie.js"></script>
 </body>
 </html>
