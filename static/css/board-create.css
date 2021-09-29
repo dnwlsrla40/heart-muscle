@@ -1,0 +1,15 @@
+* {
+    font-family: 'Do Hyeon', sans-serif;
+}
+
+.board_create_form {
+    width: 700px;
+    margin: 50px auto 20px auto;
+}
+
+.btn {
+    display: block;
+    width: 200px;
+    margin: 30px auto 50px 250px;
+    font-family: 'Do Hyeon', sans-serif;
+}
