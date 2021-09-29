@@ -1,0 +1,88 @@
+#exer-box {
+    width: 800px;
+    height: 900px;
+    margin:auto;
+}
+
+#nav-box {
+    width: 41%;
+    height: 900px;
+    position: relative;
+    float: left;
+    margin-right: 10%;
+}
+
+#arm-nav {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#chest-nav {
+    position: absolute;
+    top: 27%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#stomach-nav {
+    position: absolute;
+    top: 39%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#leg-nav {
+    position: absolute;
+    top: 51%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#body-nav {
+    position: absolute;
+    top: 63%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.exer-button{
+    width: 200px;
+    z-index: 2;
+}
+
+.title{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.dropdown-item {
+    z-index : -1;
+}
+
+/* img 관련 css */
+#human-img {
+    width: 40%;
+    height: 700px;
+    margin: auto;
+    float: left;
+
+    background-image: url("../img/human.png");
+    background-size: cover;
+    background-position: center;
+}
+
+#line-img {
+    width:200px;
+    height: 40px;
+    float: left;
+    position: relative;
+    left: -110px;
+    top: 220px;
+    background-image: url("../img/line.PNG");
+    background-size: 200px;
+    background-position: center;
+}
