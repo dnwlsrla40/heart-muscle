@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- 외부 css 파일 불러오기 -->
+    <link rel="stylesheet" type="text/css" href="../static/css/board-create.css">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -18,63 +21,34 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
+    <!--    폰트설정-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
     <title>Heart Muscle</title>
 </head>
 
-<script>
-    function writeDiary() {
-        let writer = $('#writer').val();
-        let title = $('#title').val();
-        let content = $('#content').val();
-
-        $.ajax({
-            type: "POST",
-            url: "/api/board",
-            dataType: "json",
-            data: {writer_give: writer, title_give: title, content_give: content},
-            success: function (response) {
-                alert(response["msg"]);
-                window.location.reload();
-            }
-        })
-    }
-
-</script>
-
-<style>
-    .diaryform {
-        width: 700px;
-        margin: 50px auto 20px auto;
-    }
-
-    .btn {
-        display: block;
-        margin: auto auto 50px auto;
-    }
-</style>
-
 <body>
-<div class="diaryform">
-
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">이름</span>
-        <input id="writer" type="text" class="form-control" placeholder="이름을 입력하세요" aria-label="Username"
-               aria-describedby="basic-addon1">
+<div class="board_create_form">
+    <h2 style="margin-bottom: 50px">오늘의 득근일지 작성하기!</h2>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">작성자</label>
+        <input id="writer" type="email" class="form-control" id="exampleFormControlInput1" placeholder="이름을 입력하세요.">
     </div>
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">제목</span>
-        <input id="title" type="text" class="form-control" placeholder="제목을 입력하세요" aria-label="Username"
-               aria-describedby="basic-addon1">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">제목</label>
+        <input id="title" type="email" class="form-control" id="exampleFormControlInput1" placeholder="제목을 입력하세요.">
     </div>
-    <div class="input-group">
-        <span class="input-group-text">내용</span>
-        <textarea id="content" class="form-control" aria-label="With textarea" placeholder="내용을 입력하세요"></textarea>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">내용</label>
+        <textarea id="content" class="form-control" id="exampleFormControlTextarea1" rows="7"
+                  placeholder="내용을 입력하세요."></textarea>
     </div>
+<button onclick="writeDiary()" type="button" class="btn btn-primary btn-lg" class="btn">두근득근 일지 작성</button>
 
 </div>
 
-<button onclick="writeDiary()" type="button" class="btn btn-secondary" class="btn">두근득근 일지 작성</button>
-
+<script src="../static/js/board-create.js"></script>
 </body>
 
 </html>
