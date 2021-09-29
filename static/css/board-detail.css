@@ -1,0 +1,22 @@
+.wrap {
+    display: block;
+}
+
+.form-control {
+    border: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.input-group-text {
+    background-color: pink;
+    color: white;
+}
+
+#text-box {
+    border: solid pink;
+}
+
+.badge-primary {
+    background-color: pink;
+}

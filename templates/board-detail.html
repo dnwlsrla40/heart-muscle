@@ -9,115 +9,31 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
+    <!-- 외부 CSS 파일 반영 -->
+    <link rel="stylesheet" type="text/css" href="../static/css/board-detail.css.css">
+
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
             crossorigin="anonymous"></script>
 
+    <!-- 외부 js -->
+    <script type="application/javascript" src="../static/js/board-detail.js.js"></script>
+
     <!--    Fontawesome library-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
     <title>득근일지</title>
-    <script>
-        $(function () {
-            show_detail_page();
-        });
-
-        function show_detail_page() {
-            let post_id = $()
-            $.ajax({
-                type: "GET",
-                url: "/api/board/post",
-                data: {},
-                success: function (response) {
-                    let logs = response['one_log'];
-                    console.log(response)
-
-                    let created_at = logs['created_at']
-                    let writer = logs['writer']
-                    let title = logs['title']
-                    let content = logs['content']
-
-                    let temp_html = `<div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="badge badge-primary">이름</span>
-                                                ${writer}
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="badge badge-primary">제목</span>
-                                                ${title}
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="badge badge-primary">작성일</span>
-                                                ${created_at}
-                                            </div>
-                                        </div>
-                                     </div>
-
-                                    <form class="was-valicreated_atd">
-                                        <div class="mb-3">
-                                            <label for="validationTextarea"><span class="badge badge-primary">내용</span></label>
-                                            <textarea readonly rows="10" class="form-control is-invalid" id="validationTextarea" placeholder="내용"
-                                                      required>${content}</textarea>
-                                            <div class="invalid-feedback">
-
-                                            </div>
-                                        </div>
-                                    </form>`
-                    $('#read-box').append(temp_html)
-                }
-
-            })
-        }
-
-    </script>
-
     <style>
-        .wrap {
-            display: block;
-        {#background-color: blue;#} padding: 50px;
-            width: 700px;
-            margin: auto;
-        }
 
-        {##top-boxes {#}
-        {#    border: none;#}
-        {#    border-color: transparent;#}
-        {#    box-shadow: none;#}
-
-        {##}
-        .form-control {
-            border: none;
-            border-color: transparent;
-            box-shadow: none;
-        }
-
-        .input-group-text {
-            background-color: pink;
-            color: white;
-        }
-
-        #text-box {
-            border: solid pink;
-        }
-
-        .badge-primary {
-            background-color: pink;
-        }
     </style>
 </head>
-<body>
-<div class="wrap">
-    <div id="read-box"></div>
-    <button type="submit" class="btn btn-outline-danger">수정</button>
-    <button type="button" class="btn btn-outline-danger">목록</button>
-</div>
-</div>
-</body>
+    <body>
+        <div class="wrap">
+            <div id="read-box"></div>
+            <button type="submit" class="btn btn-outline-danger">수정</button>
+            <button type="button" class="btn btn-outline-danger">목록</button>
+        </div>
+    </body>
 </html>
