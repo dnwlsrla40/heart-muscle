@@ -3,6 +3,7 @@ import time
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
 from datetime import datetime
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
@@ -92,8 +93,8 @@ def update_board():
     if request.method == "POST":
         update_receive = request.form.get('update_content') #수정할 텍스트를 받아왔음
         title_receive = request.form.get('update_title') #받아온타이틀
-        target_text = db.board.find_one({'title': title_receive})
-        print(target_text)
+        find = db.board.find_one({'title': title_receive})
+        print(find)
 
 # board 하나 제거하는 기능
 @app.route('/api/delete', methods=['POST'])

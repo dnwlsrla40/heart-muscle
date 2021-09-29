@@ -17,32 +17,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <!-- 외부 CSS 가져오기 -->
+    <link rel="stylesheet" type="text/css" href="../static/css/board-update.css">
 </head>
-<script>
-
-    $(document).ready(function () {
-        diary_data();
-    });
-
-    function diary_update() {
-        let board = $('#update_text').val()
-        let title = $('#update_title').val()
-
-        $.ajax({
-            type: "POST",
-            url: "/api/board/board",
-            data: {update_content: board, update_title: title},
-            success: function (response) {
-                alert(response['msg']);
-                window.location.reload()
-            }
-        })
-    }
-
-    function diary_data() {
-
-    }
-</script>
 
 <body>
 <div>
