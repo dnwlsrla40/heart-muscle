@@ -77,6 +77,38 @@ def read_reviews():
 def detailed_post_page():
     return render_template('detailed_post_page.html')
 
+#제거
+@app.route('/api/delete', methods=['POST'])
+def diary_delete():
+    writer_receive = request.form['writer_give'] #이름 받아오기
+    db.dbMuscle.delete_one({'writer': writer_receive}) # 받아온 이름으로 db 삭제하기
+    return jsonify({'msg': '삭제 완료'}) #메세지 리턴해주기
+
+#수정 상세페이지 이동
+@app.route('/boardupdate', methods=['GET', 'POST'])
+def boardupdate():
+    return redirect(url_for('success'))
+
+@app.route('/success')
+def success():
+    return render_template('boardupdate.html')
+
+# 수정 페이지에서 값 받아오기
+@app.route('/updatepage', methods=['GET', 'POST'])
+def updatepage():
+    if request.method == "GET":
+        title_receive = request.args.get('title_give')  # title값 받아와써
+        writer_receive = request.args.get('writer_give')  # 이름받고
+        content_receive = request.args.get('content_give')  # 내용받고
+        get_list = [title_receive, writer_receive, content_receive]
+        return jsonify(get_list)
+
+    if request.method == "POST":
+        update_receive = request.form.get('update_content') #수정할 텍스트를 받아왔음
+        title_receive = request.form.get('update_title') #받아온타이틀
+        target_text = db.dbMuscle.find_one({'title': title_receive})
+        print(target_text)
+
 @app.route('/detailed_post/post', methods=['GET'])
 def show_detail_page():
     one_log = db.heart_log.find_one({'name':'김아무개'}, {'_id':False})
