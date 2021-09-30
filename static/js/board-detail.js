@@ -49,9 +49,18 @@ function show_board_detail() {
 
                                             </div>
                                         </div>
-                                    </form>`
+                                        <button class="btn btn-outline-danger" onclick="show_update(event, '${content}')">수정</button>
+                                        <button type="button" class="btn btn-outline-danger">목록</button>
+                                    </form>
+                                         `
             $('#read-box').append(temp_html)
         }
 
     })
+}
+
+function show_update(event, content){
+    event.preventDefault()
+    console.log(content)
+    window.location.href='/board-update?content='+content
 }
