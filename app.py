@@ -67,6 +67,7 @@ def save_board():
             'content': content_receive,
             'created_at': time.strftime('%Y-%m-%d', time.localtime(time.time())),
             'views': 0,
+            'likes': 0,
             'count': db.board.count() + 1
         }
 
