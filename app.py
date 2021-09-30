@@ -35,17 +35,22 @@ def get_board_create_html():
 def get_board_detail_html():
     return render_template('board-detail.html')
 
-# 수정 상세페이지 이동
-@app.route('/board-update', methods=['GET', 'POST'])
-def board_update():
-    return redirect(url_for('success'))
-
-@app.route('/success')
-def success():
+# board update 화면에 찍어주는 html 라우팅
+@app.route('/board-update')
+def get_board_update_html():
     return render_template('board-update.html')
 
+# # 수정 상세페이지 이동
+# @app.route('/board-update', methods=['GET', 'POST'])
+# def board_update():
+#     return redirect(url_for('success'))
+
+# @app.route('/success')
+# def success():
+#     return render_template('board-update.html')
+
 # board list 가져오는 기능
-@app.route('/api/board', methods=['GET'])
+@app.route('/show/board', methods=['GET'])
 def get_board_list():
     logs = list(db.board.find({}, {'_id': False}))
     return jsonify({'all_logs': logs})
@@ -74,33 +79,39 @@ def save_board():
         return jsonify({'msg': '저장 완료!'})
 
 # board 하나 가져오는 기능
-@app.route('/api/board/board', methods=['GET'])
+@app.route('/api/board/post', methods=['GET'])
 def get_board_detail():
-    one_log = db.board.find_one({'writer': 'test6'}, {'_id': False})
-    print(one_log)
-    return jsonify({'one_log': one_log})
+    content_receive = request.args.get('content_give')  # 내용받고
+
+    data = db.board.find_one({"content": content_receive}, {"_id": False})
+    print("result:", data)
+
+    return jsonify(data)
 
 # 수정 페이지에서 값 받아오기
-@app.route('/api/board/board', methods=['POST'])
+@app.route('/api/board-update', methods=['GET'])
 def update_board():
-    # if request.method == "GET":
-    #     title_receive = request.args.get('title_give')  # title값 받아와써
-    #     writer_receive = request.args.get('writer_give')  # 이름받고
-    #     content_receive = request.args.get('content_give')  # 내용받고
-    #     get_list = [title_receive, writer_receive, content_receive]
-    #     return jsonify(get_list)
+    content_receive = request.args.get('content_give')
+    content_data = db.board.find_one({'content': content_receive}, {'_id': False})
+    return jsonify(content_data)
 
-    if request.method == "POST":
-        update_receive = request.form.get('update_content') #수정할 텍스트를 받아왔음
-        title_receive = request.form.get('update_title') #받아온타이틀
-        find = db.board.find_one({'title': title_receive})
-        print(find)
+@app.route('/api/board-update', methods=['POST'])
+def update_board_content():
+    content_receive = request.form['content_give']
+    update_receive = request.form['update_content_give'] #수정할 텍스트를 받아왔음
+    title_receive = request.form['title_give'] #받아온타이틀
+    print(content_receive, update_receive, title_receive)
+    db.board.update_one({'content': content_receive}, {"$set": {'title': title_receive}})
+    db.board.update_one({'content': content_receive}, {"$set": {'content': update_receive}})
+    return jsonify({'msg': '완료'})
+
+
 
 # board 하나 제거하는 기능
 @app.route('/api/delete', methods=['POST'])
 def delete_board():
-    writer_receive = request.form['writer_give'] #이름 받아오기
-    db.board.delete_one({'writer': writer_receive}) # 받아온 이름으로 db 삭제하기
+    title_receive = request.form['title_give'] #이름 받아오기
+    db.board.delete_one({'title': title_receive}) # 받아온 이름으로 db 삭제하기
     return jsonify({'msg': '삭제 완료'}) #메세지 리턴해주기
 
 ###################### movie 관련 def ########################

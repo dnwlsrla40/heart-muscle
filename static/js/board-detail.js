@@ -1,21 +1,23 @@
 $(function () {
-    show_detail_page();
+    show_board_detail();
 });
 
-function show_detail_page() {
-    let post_id = $()
+function show_board_detail() {
+    var search = location.search
+    console.log("search: ", search)
+    var params = new URLSearchParams(search);
+    console.log("params: ", params)
+    var getType = params.get('content');
+    console.log("getType: ", getType)
     $.ajax({
         type: "GET",
         url: "/api/board/post",
-        data: {},
+        data: {content_give: getType},
         success: function (response) {
-            let logs = response['one_log'];
             console.log(response)
-
-            let created_at = logs['created_at']
-            let writer = logs['writer']
-            let title = logs['title']
-            let content = logs['content']
+            let title = response['title']
+            let writer = response['writer']
+            let content = response['content']
 
             let temp_html = `<div>
                                         <div class="input-group mb-3">
@@ -33,7 +35,7 @@ function show_detail_page() {
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="badge badge-primary">작성일</span>
-                                                ${created_at}
+                                               
                                             </div>
                                         </div>
                                      </div>
@@ -47,9 +49,18 @@ function show_detail_page() {
 
                                             </div>
                                         </div>
-                                    </form>`
+                                        <button class="btn btn-outline-danger" onclick="show_update(event, '${content}')">수정</button>
+                                        <button type="button" class="btn btn-outline-danger">목록</button>
+                                    </form>
+                                         `
             $('#read-box').append(temp_html)
         }
 
     })
+}
+
+function show_update(event, content){
+    event.preventDefault()
+    console.log(content)
+    window.location.href='/board-update?content='+content
 }

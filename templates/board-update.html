@@ -25,20 +25,11 @@
 <div>
     <h1>수정하실 내용을 입력해 주세요</h1>
 </div>
-<div>
-    <form name="update" action="/api/board/board" method="post">
-        <input type="hidden" name="idx" value=""/>
-        제목 : <input type="text" id="title" name="update_title" value=""/></br>
-        작성자 : <br/><br/>
-        =============================================<br/>
-        <textarea rows="10" cols="50" name="update_text"> </textarea>
-        <div>
-            <input type=submit value="수정">
-            <input type=button value="목록" onclick="location.href='/board-list'"/>
-        </div>
-    </form>
+<div id = "form-box">
+
 </div>
 
+<script src="../static/js/board-update.js"></script>
 </body>
 
 
