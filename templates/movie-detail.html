@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- 외부 CSS 파일 반영 -->
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
-
-    <!--<iframe src="./common/header.html"></iframe>-->
+    <link rel="stylesheet" type="text/css" href="../static/css/movie-detail.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/header.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -25,8 +24,37 @@
     <title>Title</title>
 </head>
 <body>
-<div id="youtube-box">
-    <iframe width="560" height="390" src="https://www.youtube.com/embed/gMaB-fG4u4g" title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<nav class="navbar navbar-expand-lg navbar-dark" id="nav-menu">
+    <a class="navbar-brand logo" href="/main">두근득근</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/board-list">게시판 <span class="sr-only">(current)</span></a>
+            </li>
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="#">Link</a>#}
+{#            </li>#}
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button type="button" class="btn btn-outline-light">로그인</button>
+        </form>
+    </div>
+</nav>
+<div class="jumbotron" id="jumbotron">
+    <h1 class="display-4">영상의 상세 페이지</h1>
+    <input type="hidden" id="part" value="{{ part }}">
 </div>
+
+<div>
+    <iframe id="youtube-box" title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<!-- 외부 js 파일 불러오기 -->
+<script type="text/javascript" src="../static/js/movie-detail.js"></script>
 </body>
 </html>

@@ -1,5 +1,16 @@
+#jumbotron{
+  background-color: pink;
+  text-align: center;
+}
+
+#jumbotron > h1 {
+  color: white;
+  font-weight: bold;
+}
+
 #youtube-box {
-    width:900px;
+    width:800px;
+    height: 500px;
     display: block;
-    margin: auto;
+    margin: 150px auto;
 }

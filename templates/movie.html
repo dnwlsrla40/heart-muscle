@@ -6,6 +6,7 @@
 
     <!-- 외부 css 파일 불러오기 -->
     <link rel="stylesheet" type="text/css" href="../static/css/movie.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/header.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -25,16 +26,31 @@
 </head>
 
 <body>
-<div class="jumbotron" id="test">
-    <h1 class="display-4">당신이 원하는 홈트 영상을 검색해보세요!</h1>
-    <p class="lead">{{ part }}</p>
-    <hr class="my-4">
-    <p>검색어 : <input type="text" id="query"></p>
-    <p class="lead">
-        <a class="btn btn-outline-primary" onclick="search1()" role="button">검색</a>
-    </p>
-</div>
+<nav class="navbar navbar-expand-lg navbar-dark" id="nav-menu">
+    <a class="navbar-brand logo" href="/main">두근득근</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/board-list">게시판 <span class="sr-only">(current)</span></a>
+            </li>
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="#">Link</a>#}
+{#            </li>#}
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button type="button" class="btn btn-outline-light">로그인</button>
+        </form>
+    </div>
+</nav>
+<div class="jumbotron" id="jumbotron">
+    <h1 class="display-4">두근득근이 추천하는 {{part}} 운동 홈트 영상!</h1>
+    <input type="hidden" id="part" value="{{ part }}">
+</div>
 
 <div class="card-columns" id="card-box">
 </div>

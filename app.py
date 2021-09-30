@@ -118,21 +118,28 @@ def delete_board():
 
 ###################### movie 관련 def ########################
 
+# movie list 화면에 찍어주는 html 라우팅
 @app.route('/movie', methods=['GET'])
-def movie():
+def get_movie_html():
     part = request.args.get('part')
-    print(part)
+    print("GET /movie: ", part)
     return render_template('movie.html', part=part)
 
-## movie화면 이동 및 클릭한 데이터값 전달
+# movie 상세 동영상 및 정보 화면에 찍어주는 html 라우팅
+@app.route('/movie-detail', methods=['GET'])
+def get_movie_detail_html():
+    return render_template('movie-detail.html')
+
+# movie화면 이동 및 클릭한 데이터값 전달
 @app.route('/movie', methods=['POST'])
 def get_part():
     part = request.form['part']
-    print("POST: " + part)
-    return redirect(url_for('movie',  part=part))
+    print("POST: ", part)
+    return jsonify({'data': part})
 
-@app.route('/movies', methods=['GET'])
-def test():
+# youtube api 사용해서 검색된 동영상 가져오기
+@app.route('/api/movies', methods=['GET'])
+def get_youtube_movies():
     # q = "홈트 "
     q = request.args.get('q')
     print(q)
@@ -141,7 +148,7 @@ def test():
         "q": q,
         "part": "snippet",
         "key": "AIzaSyARx6jH12f_mg-uAm_1bmlqlR8Ov69bKYY",
-        "maxResults": "5",
+        "maxResults": "6",
         "type": "video",
         "videoDuration": "medium",  # 영상 길이 : 4분이상, 20분 이하
     }
