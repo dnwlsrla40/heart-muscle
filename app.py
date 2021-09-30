@@ -49,6 +49,7 @@ def get_board_list():
     logs = list(db.board.find({}, {'_id': False}))
     return jsonify({'all_logs': logs})
 
+
 # board 작성(저장) 기능
 @app.route('/api/board', methods=['POST'])
 def save_board():

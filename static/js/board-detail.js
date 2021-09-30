@@ -1,3 +1,42 @@
+$(document).ready(function () {
+    test()
+});
+
+function test() {
+    var search = location.search
+    console.log("search: ", search)
+    var params = new URLSearchParams(search);
+    console.log("params: ", params)
+    var getType = params.get('diary');
+    console.log("getType: ", getType)
+
+    $.ajax({
+        type: "GET",
+        url: "/updatepage",
+        data: {diary_give: getType},
+        success: function (response) {
+            let title = response['title']
+            let name = response['name']
+            let diary = response['diary']
+
+            let temp_html = `<form name="update" action="/updatepage" method="post">
+                                <input type="hidden" name="idx" value=""/>
+                                제목 : <input type="text" id="title" name="update_title" value="${title}"/></br>
+                                작성자 : <br/>${name}<br/>
+                                =============================================<br/>
+                                <textarea rows="10" cols="50" name="update_text">${diary}</textarea>
+                                <div>
+                                    <input type=submit value="수정">
+                                    <input type=button value="목록" onclick="location.href='index.html'"/>
+                                </div>
+                            </form>`
+
+            $('#form-box').append(temp_html)
+        }
+    })
+}
+
+
 $(function () {
     show_detail_page();
 });
