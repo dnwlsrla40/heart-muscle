@@ -11,6 +11,8 @@ function writeDiary() {
         success: function (response) {
             alert(response["msg"]);
             window.location.reload();
+            window.location.href='/board-list'
         }
     })
 }
+

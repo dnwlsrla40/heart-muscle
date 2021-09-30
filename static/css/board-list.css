@@ -1,3 +1,19 @@
 a {
     display: block;
 }
+
+.btn, btn-primary {
+    background-color: pink;
+    border: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+card-footer-item, has-text-info{
+    background-color: pink;
+    color: pink;
+}
+
+#writer-button{
+    background-color:unset;
+}

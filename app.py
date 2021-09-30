@@ -50,7 +50,7 @@ def get_board_update_html():
 #     return render_template('board-update.html')
 
 # board list 가져오는 기능
-@app.route('/show/board', methods=['GET'])
+@app.route('/api/board-list', methods=['GET'])
 def get_board_list():
     logs = list(db.board.find({}, {'_id': False}))
     return jsonify({'all_logs': logs})
@@ -83,9 +83,9 @@ def save_board():
 # board 하나 가져오는 기능
 @app.route('/api/board/post', methods=['GET'])
 def get_board_detail():
-    content_receive = request.args.get('content_give')  # 내용받고
+    writer_receive = request.args.get('writer_give')  # 내용받고
 
-    data = db.board.find_one({"content": content_receive}, {"_id": False})
+    data = db.board.find_one({"writer": writer_receive}, {"_id": False})
     print("result:", data)
 
     return jsonify(data)
@@ -164,27 +164,32 @@ def movie_detail():
     return render_template('movie-detail.html', videoId=videoId)
 
 
-# 내윤님 조회수 증가 코드
+# 내유님 조회수 증가
 @app.route('/api/view', methods=['POST'])
-def update_view():
-    views_receive = request.form['view_give']
-    target_writer = db.dbMuscle.find_one({'writer': views_receive})
-    current_views = target_writer['views']
-    new_views = current_views + 1
-    db.dbMuscle.update_one({'writer': views_receive}, {'$set': {'views': new_views}})
-    return jsonify({'msg': '상세페이지로 이동합니다!'})
+def update_views():
+    writer_receive = request.form['writer_give']
+
+    target_post = db.board.find_one({'writer': writer_receive})
+
+    current_like = target_post['views']
+    new_like = current_like + 1
+
+    db.board.update_one({'writer': writer_receive}, {'$set': {'views': new_like}})
+
+    return jsonify({'msg': '좋아요 완료!'})
+
 
 # 정대님 좋아요 증가 코드
 @app.route('/api/like', methods=['POST'])
 def like_star():
-    name_receive = request.form['name_give']
+    writer_receive = request.form['writer_give']
 
-    target_log = db.heart_log.find_one({'name': name_receive})
-    current_like = target_log['like']
+    target_post = db.board.find_one({'writer': writer_receive})
 
+    current_like = target_post['likes']
     new_like = current_like + 1
 
-    db.heart_log.update_one({'name': name_receive}, {'$set': {'like': new_like}})
+    db.board.update_one({'writer': writer_receive}, {'$set': {'likes': new_like}})
 
     return jsonify({'msg': '좋아요 완료!'})
   
