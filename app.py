@@ -72,6 +72,7 @@ def save_board():
             'content': content_receive,
             'created_at': time.strftime('%Y-%m-%d', time.localtime(time.time())),
             'views': 0,
+            'likes': 0,
             'count': db.board.count() + 1
         }
 
@@ -163,7 +164,7 @@ def movie_detail():
 
 
 # 내윤님 조회수 증가 코드
-@app.route('/diary/view', methods=['POST'])
+@app.route('/api/view', methods=['POST'])
 def update_view():
     views_receive = request.form['view_give']
     target_writer = db.dbMuscle.find_one({'writer': views_receive})
