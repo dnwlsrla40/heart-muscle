@@ -153,7 +153,7 @@ def movie_detail():
 
 
 # 내윤님 조회수 증가 코드
-@app.route('/diary/view', methods=['POST'])
+@app.route('/api/view', methods=['POST'])
 def update_view():
     views_receive = request.form['view_give']
     target_writer = db.dbMuscle.find_one({'writer': views_receive})
