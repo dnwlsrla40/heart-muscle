@@ -21,34 +21,36 @@ function show_board_detail() {
             let created_at = response['created_at']
 
             let temp_html = `<div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="badge badge-primary">이름</span>
-                                        <p>${writer}</p>
-                                        
-                                    </div>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    <div class="input-group-prepend common">
                                         <span class="badge badge-primary">제목</span>
-                                        <p>${title}</p>
+                                        <div class="data">${title}</div>
                                     </div>
                                 </div>
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    <div class="input-group-prepend common">
+                                        <span class="badge badge-primary">작성자</span>
+                                        <div class="data">${writer}</div>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend common">
                                         <span class="badge badge-primary">작성일</span>
-                                        <p>${created_at}</p>
+                                        <div class="data">${created_at}</div>
                                     </div>
                                 </div>
                              <form class="was-valicreated_atd">
-                                <div class="mb-3">
+                                <div class="mb-3" common>
                                     <label for="validationTextarea"><span class="badge badge-primary">내용</span></label>
-                                    <textarea readonly rows="10" class="form-control is-invalid" id="validationTextarea" placeholder="내용"
+                                    <textarea readonly rows="10" class="form-control is-invalid data" id="validationTextarea" placeholder="내용"
                                               required>${content}</textarea>
                                     <div class="invalid-feedback">
                                     </div>
                                 </div>
-                                    <button class="btn btn-outline-danger" onclick="show_update(event, '${content}')">수정</button>
-                                    <button type="button" class="btn btn-outline-danger">목록</button>
+                                
+                                 <div>
+                                    <button class="btn btn-outline-danger" onclick="show_update(event, '${content}')"><i class="fas fa-edit"></i></button>
+                                    <button onclick="window.location.href='/board-list'" type="button" class="btn btn-outline-danger"><i class="fas fa-list"></i></button>
+                                </div>
                             </form>
                                          `
             $('#read-box').append(temp_html)

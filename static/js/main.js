@@ -35,17 +35,17 @@ $("#whole-body").on("click", function (event) {
 })
 
 function armClick() {
-    $('#chest-nav').toggle()
+    $('#chest-nav').addClass('hide')
 }
 
 function chestClick() {
-    $('#stomach-nav').toggle()
+    $('#stomach-nav').addClass('hide')
 }
 
 function stomachClick() {
-    $('#leg-nav').toggle()
+    $('#leg-nav').addClass('hide')
 }
 
 function legClick() {
-    $('#body-nav').toggle()
+    $('#body-nav').addClass('hide')
 }

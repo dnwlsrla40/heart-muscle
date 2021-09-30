@@ -1,7 +1,19 @@
+* {
+    font-family: 'Poor Story', cursive;
+}
+
 .logo {
     font-weight: bold;
 }
 
 #nav-menu{
     background-color: #ba94bb;
+}
+
+#pink {
+    background-color: pink;
+    border: none;
+    /*border-color: transparent;*/
+    box-shadow: none;
+    font-weight: bold;
 }

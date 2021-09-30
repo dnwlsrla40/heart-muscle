@@ -28,6 +28,11 @@
     <!-- Fontawesome library-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
+    <!-- 폰트설정 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
     <title>득근일지</title>
 
 </head>
@@ -42,27 +47,27 @@
                         class="sr-only">(current)</span></a></li>
                 {# <li class="nav-item">#} {# <a class="nav-link" href="#">Link</a>#} {# </li>#} </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button type="button" class="btn btn-outline-light">로그인</button>
+                <button type="button" class="btn btn-outline-light" id="pink">로그인</button>
             </form>
         </div>
     </nav>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">번호</th>
-            <th scope="col">작성일</th>
-            <th scope="col">작성자</th>
-            <th scope="col">제목</th>
-            <th scope="col">추천</th>
-            <th scope="col">조회수</th>
-        </tr>
-        </thead>
-        <tbody id="log_table">
+    <div class="wrap">
+        <a class="btn btn-primary" id="create-button" onclick="window.location.href='/board-create'" href="#" role="button"><i class="fas fa-pen-square"></i></a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">작성일</th>
+                <th scope="col">작성자</th>
+                <th scope="col">제목</th>
+                <th scope="col">추천</th>
+                <th scope="col">조회수</th>
+            </tr>
+            </thead>
+            <tbody id="log_table">
 
-        </tbody>
-
-    </table>
-    <a class="btn btn-primary" onclick="window.location.href='/board-create'" href="#" role="button"><i class="fas fa-pen-square"></i></a>
-
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

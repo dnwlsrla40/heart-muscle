@@ -22,7 +22,7 @@ function show_list() {
                                      <td onclick="update_views('${writer}');show_detail('${writer}');"><button type="button" id="writer-button" class="btn btn-link">${writer}</button></td>
                                      <td>${title}</td>
                                      <td>
-                                         <p target="_blank" class="star-writer title is-4">좋아요: ${like}</p>
+                                         <div target="_blank" class="star-writer">좋아요: ${like}</div>
                                          <a href="#" onclick="like_star('${writer}')" class="card-footer-item has-text-info"><i class="far fa-thumbs-up"></i></a>
                                      </td>
                                      <td>${views}</td>

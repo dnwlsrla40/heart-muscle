@@ -1,20 +1,38 @@
+.wrap {
+    width: 800px;
+    margin: 100px auto;
+}
+
 .form-control {
     border: none;
     border-color: transparent;
     box-shadow: none;
 }
 
-.input-group-text {
-    background-color: pink;
-    color: white;
-}
+/*.input-group-text {*/
+/*    background-color: pink;*/
+/*    color: white;*/
+/*}*/
 
-#text-box {
-    border: solid pink;
+/*#text-box {*/
+/*    border: solid pink;*/
+/*}*/
+
+common {
+    font-weight: bold;
+    vertical-align: middle;
+    height: 40px;
 }
 
 .badge-primary {
     background-color: pink;
+    font-weight: bold;
+    font-size: 100%;
+    vertical-align: middle;
+    line-height: 30px;
+    text-align: center;
+    width: 80px;
+    height: 40px;
 }
 
 .post-box{
@@ -22,4 +40,9 @@
     width: 600px;
 }
 
-
+.data {
+    margin: 0 0 0 10px;
+    line-height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}

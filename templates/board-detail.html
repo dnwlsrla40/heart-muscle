@@ -25,30 +25,35 @@
     <!--    Fontawesome library-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
+    <!-- 폰트설정 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
     <title>득근일지</title>
     <style>
 
     </style>
 </head>
-    <body>
-    <nav class="navbar navbar-expand-lg navbar-dark" id="nav-menu"><a class="navbar-brand logo" href="/main">두근득근</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-                class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link" href="/board-list">게시판 <span
-                        class="sr-only">(current)</span></a></li>
-                {# <li class="nav-item">#} {# <a class="nav-link" href="#">Link</a>#} {# </li>#} </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <button type="button" class="btn btn-outline-light">로그인</button>
-            </form>
-        </div>
-    </nav>
-        <div class="wrap">
-            <div id="read-box"></div>
-            <button type="submit" class="btn btn-outline-danger"><i class="fas fa-edit"></i></button>
-            <button onclick="window.location.href='/board-list'" type="button" class="btn btn-outline-danger"><i class="fas fa-list"></i></button>
-        </div>
-    </body>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark" id="nav-menu">
+    <a class="navbar-brand logo" href="/main">두근득근</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" href="/board-list">게시판 <span
+                    class="sr-only">(current)</span></a></li>
+            {# <li class="nav-item">#} {# <a class="nav-link" href="#">Link</a>#} {# </li>#} </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button type="button" class="btn btn-outline-light" id="pink">로그인</button>
+        </form>
+    </div>
+</nav>
+    <div class="wrap">
+        <div id="read-box"></div>
+    </div>
+
+</body>
 </html>
