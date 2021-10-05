@@ -7,7 +7,7 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.dbMuscle
 
 
@@ -39,15 +39,6 @@ def get_board_detail_html():
 @app.route('/board-update')
 def get_board_update_html():
     return render_template('board-update.html')
-
-# # 수정 상세페이지 이동
-# @app.route('/board-update', methods=['GET', 'POST'])
-# def board_update():
-#     return redirect(url_for('success'))
-
-# @app.route('/success')
-# def success():
-#     return render_template('board-update.html')
 
 # board list 가져오는 기능
 @app.route('/api/board-list', methods=['GET'])
@@ -106,8 +97,6 @@ def update_board_content():
     db.board.update_one({'content': content_receive}, {"$set": {'title': title_receive}})
     db.board.update_one({'content': content_receive}, {"$set": {'content': update_receive}})
     return jsonify({'msg': '완료'})
-
-
 
 # board 하나 제거하는 기능
 @app.route('/api/delete', methods=['POST'])
@@ -170,22 +159,6 @@ def movie_detail():
     print(videoId)
     return render_template('movie-detail.html', videoId=videoId)
 
-
-# 내유님 조회수 증가
-@app.route('/api/view', methods=['POST'])
-def update_views():
-    writer_receive = request.form['writer_give']
-
-    target_post = db.board.find_one({'writer': writer_receive})
-
-    current_like = target_post['views']
-    new_like = current_like + 1
-
-    db.board.update_one({'writer': writer_receive}, {'$set': {'views': new_like}})
-
-    return jsonify({'msg': '좋아요 완료!'})
-
-
 # 정대님 좋아요 증가 코드
 @app.route('/api/like', methods=['POST'])
 def like_star():
@@ -202,3 +175,18 @@ def like_star():
   
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
+
+    # # 내유님 조회수 증가
+    # @app.route('/api/view', methods=['POST'])
+    # def update_views():
+    #     writer_receive = request.form['writer_give']
+    #
+    #     target_post = db.board.find_one({'writer': writer_receive})
+    #
+    #     current_like = target_post['views']
+    #     new_like = current_like + 1
+    #
+    #     db.board.update_one({'writer': writer_receive}, {'$set': {'views': new_like}})
+    #
+    #     return jsonify({'msg': '좋아요 완료!'})
