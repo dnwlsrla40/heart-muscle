@@ -1,15 +1,17 @@
 # Sparta 내배캠 POC 프로젝트(heart-muscle)
 
 스파르타 내배캠 13팀 teamco의 두근득근 Project Repository 입니다.
-<p align='center'>
+
+
+<!-- <p align='center'>
     <img src="https://github/pipenv/locked/python-version/:user/:repo"/>
-</p>
+</p>-->
 
 <!-- 
 <p align='center'>
 
     <img src="https://github/pipenv/locked/python-version/:user/:repo"/>
-<!--     <img src="https://img.shields.io/badge/Lodash-v4.17.21-blue"/>
+    <img src="https://img.shields.io/badge/Lodash-v4.17.21-blue"/>
     <img src="https://img.shields.io/badge/ReduxToolkit-v1.5.1-purple"/>
     <img src="https://img.shields.io/badge/StyledComponents-v5.2.3-pink?logo=styled-components"/>
     <img src="https://img.shields.io/badge/SpringBoot-v2.4.4-6db33f?logo=Spring"/>
