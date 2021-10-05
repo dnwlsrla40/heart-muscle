@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/ReduxToolkit-v1.5.1-purple"/>
     <img src="https://img.shields.io/badge/StyledComponents-v5.2.3-pink?logo=styled-components"/>
     <img src="https://img.shields.io/badge/SpringBoot-v2.4.4-6db33f?logo=Spring"/>
-    <img src="https://img.shields.io/badge/yarn-^1.22.10-yellow?logo=yarn" /> -->
+    <img src="https://img.shields.io/badge/yarn-^1.22.10-yellow?logo=yarn" />
 </p> -->
 
 ### 개발 기간
