@@ -7,9 +7,44 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb://test:test@localhost', 27017)
+# client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient("mongodb://localhost", 27017)
 db = client.dbMuscle
 
+
+###################### new Template 관련 def ########################
+
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('index.html')\
+
+
+@app.route('/video-list', methods=['GET'])
+def get_video_list_html():
+    return render_template('video-list.html')
+
+
+@app.route('/question', methods=['GET'])
+def get_question():
+    codes = list(db.question.find({}).distinct('group'))
+    print(codes)
+    return jsonify(codes)
+
+
+@app.route('/codes', methods=['GET'])
+def get_codes():
+    group = request.args.get('group')
+    print("group:" + group)
+    codes = list(db.question.find({'group': group}, {'_id': False}))
+    return jsonify(codes)
+
+
+@app.route('/api/videos', methods=['POST'])
+def get_videos():
+    info = request.json
+    print("info:", info)
+    videos = list(db.videos.find(info, {'_id': False}))
+    return jsonify(videos)
 
 ###################### main 관련 def ########################
 
@@ -72,8 +107,8 @@ def save_board():
         return jsonify({'msg': '저장 완료!'})
 
 # board 하나 가져오는 기능
-@app.route('/api/board/post', methods=['GET'])
-def get_board_detail():
+@app.route('/api/board/<id>', methods=['GET'])
+def get_board_detail(id):
     writer_receive = request.args.get('writer_give')  # 내용받고
 
     data = db.board.find_one({"writer": writer_receive}, {"_id": False})
