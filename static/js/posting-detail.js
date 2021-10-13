@@ -85,8 +85,7 @@ function posting_detail() {
                                                 <div class="widget widget-recent-post">
                                                     <h2 class="widget-title">WORKOUT</h2>
                                                     <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 mb40">
-                                                                <!-- 운동 데이터 GET 예시-->
+                                                        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 mb40">                                                                
                                                                 <div class="recent-block">
                                                                     <div class="recent-content mb30">
                                                                         <!-- recent block -->
@@ -125,9 +124,7 @@ function posting_detail() {
                                                     <div class="row">
                                                         <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 mb40">
                                                             <div class="recent-block">
-                                                                <div class="recent-content mb30">
-
-                                                                    <!-- 식단 GET 예시 -->
+                                                                <div class="recent-content mb30">                                                                   
                                                                     <!-- recent block -->
                                                                     <h3 class="recent-title"><a href="#" class="title">Breakfast</a></h3>
                                                                     <div class="post-meta"><span class="meta-date"><i
