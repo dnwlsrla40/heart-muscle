@@ -1,5 +1,6 @@
 import requests
 import time
+import boto3
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
 from datetime import datetime
@@ -172,6 +173,141 @@ def like_star():
     db.board.update_one({'writer': writer_receive}, {'$set': {'likes': new_like}})
 
     return jsonify({'msg': '좋아요 완료!'})
+
+## 21-10-13 1차 푸시
+
+## 피드 작성 화면
+@app.route('/posting')
+def posting_html():
+    return render_template('posting-save.html')
+
+## 피드 상세 화면
+@app.route('/posting/detail')
+def posting_detail_html():
+    return render_template('posting-detail.html')
+
+## 피드 목록 화면
+@app.route('/posting/list')
+def posting_list_html():
+    return render_template('posting-list.html')
+
+## 업로드한 사진 S3 저장 / image url DB에 저장
+@app.route('/fileupload', methods=['POST'])
+def file_upload():
+    file = request.files['file']
+    s3 = boto3.client('s3')
+    s3.put_object(
+        ACL="public-read",
+        Bucket="teamco-project",
+        Body=file,
+        Key=file.filename,
+        ContentType=file.content_type)
+
+    location = s3.get_bucket_location(Bucket="teamco-project")['LocationConstraint']
+    print(location)
+    image_url = f'https://{"teamco-project"}.s3.{location}.amazonaws.com/{file.filename}'
+    print(image_url)
+
+    image_count = db.image_url.find({}).count()
+
+    if image_count == 0:
+        max_value = 1
+    else:
+        max_value = db.image_url.find_one(sort=[("idx", -1)])['idx'] + 1
+
+
+    doc = {
+        'image_url': image_url,
+        'idx': max_value
+    }
+
+    db.image_url.insert_one(doc)
+
+    posting_idx = db.image_url.find_one({'idx': int(max_value)})
+    print(posting_idx)
+
+    # update_image = posting_idx['image_url']
+    # print(update_image)
+    # db.posting.update_one({'idx': posting_idx}, {'$set': {'image': update_image}})
+    return jsonify({'result': 'success'})
+
+## 일지 DB 저장
+@app.route('/api/posting', methods=['POST'])
+def posting():
+    title_receive = request.form['title_give']
+    content_receive = request.form['content_give']
+
+    workout_receive_01 = request.form['workout_give_01']
+    min_receive_01 = request.form['min_give_01']
+    time_receive_01 = request.form['time_give_01']
+
+    workout_receive_02 = request.form['workout_give_02']
+    min_receive_02 = request.form['min_give_02']
+    time_receive_02 = request.form['time_give_02']
+
+    workout_receive_03 = request.form['workout_give_03']
+    min_receive_03 = request.form['min_give_03']
+    time_receive_03 = request.form['time_give_03']
+
+    breakfast_receive = request.form['breakfast_give']
+    lunch_receive = request.form['lunch_give']
+    dinner_receive = request.form['dinner_give']
+    posting_count = db.posting.count()
+
+    if posting_count == 0:
+        max_value = 1
+    else:
+        max_value = db.posting.find_one(sort=[("idx", -1)])['idx'] + 1
+
+    doc = {
+        'title': title_receive,
+        'content': content_receive,
+        'workout_01': workout_receive_01,
+        'min_01': min_receive_01,
+        'time_01': time_receive_01,
+        'workout_02': workout_receive_02,
+        'min_02': min_receive_02,
+        'time_02': time_receive_02,
+        'workout_03': workout_receive_03,
+        'min_03': min_receive_03,
+        'time_03': time_receive_03,
+        'breakfast': breakfast_receive,
+        'lunch': lunch_receive,
+        'dinner': dinner_receive,
+        'created_at': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+        'views': 0,
+        'likes': 0,
+        'idx': max_value
+    }
+
+    db.posting.insert_one(doc)
+    return jsonify({'msg': '저장 완료!'})
+
+## 일지 상세내용 불러오기
+@app.route('/api/posting/detail', methods=['GET'])
+def posting_detail():
+    idx_receive = request.args.get('idx_give')
+    print(idx_receive)
+    data = db.posting.find_one({"idx": int(idx_receive)}, {"_id": False})
+    print("result:", data)
+
+    image_data = db.image_url.find_one({"idx": int(idx_receive)}, {"_id": False})
+    image = image_data['image_url']
+    print("result:", image)
+
+    return jsonify(data, image)
+
+## 일지 피드에 불러오기
+@app.route('/api/posting/list', methods=['GET'])
+def posting_list():
+
+    posts = list(db.posting.find({}, {'_id': False}))
+    print("result:", posts)
+
+    image = list(db.image_url.find({}, {'_id': False}))
+    print("result:", image)
+
+    return jsonify(posts, image)
   
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
