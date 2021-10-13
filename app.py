@@ -2,6 +2,7 @@ import requests
 import time
 import jwt
 import hashlib
+import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
 from datetime import datetime, timedelta
@@ -12,7 +13,7 @@ app = Flask(__name__)
 client = MongoClient('mongodb://localhost', 27017)
 db = client.dbMuscle
 
-SECRET_KEY = 'MUSCLE'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 ###################### main 관련 def ########################
