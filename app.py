@@ -1,15 +1,21 @@
 import requests
 import time
+import jwt
+import hashlib
+import os
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
 # client = MongoClient('mongodb://test:test@localhost', 27017)
 client = MongoClient("mongodb://localhost", 27017)
+
 db = client.dbMuscle
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 ###################### new Template 관련 def ########################
@@ -52,6 +58,60 @@ def get_videos():
 @app.route('/main', methods=['GET'])
 def main():
     return render_template('main.html')
+
+###################### 로그인 & 회원가입 관련 def ###############
+
+# 로그인 페이지 라우팅
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+
+# 회원가입 ID와 비밀번호를 받아서 DB에 저장
+@app.route('/login/sign_up', methods=['POST'])
+def sign_up():
+    userid_receive = request.form['userid_give']
+    password_receive = request.form['password_give']
+    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    doc = {
+        "userid": userid_receive,
+        "password": password_hash
+    }
+    db.usersdata.insert_one(doc)
+    return jsonify({'result': 'success'})
+
+
+# 회원가입 시 ID 중복검사
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+    userid_receive = request.form['userid_give']
+    exists = bool(db.usersdata.find_one({"userid": userid_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
+
+@app.route('/login/sign_in', methods=['POST'])
+def sign_in():
+    # 로그인
+    userid_receive = request.form['userid_give']
+    password_receive = request.form['password_give']
+
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    print(pw_hash)
+    result = db.usersdata.find_one({'userid': userid_receive, 'password': pw_hash})
+    print(userid_receive)
+
+    if result is not None:
+        payload = {
+            'id': userid_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+        return jsonify({'result': 'success', 'token': token})
+    # 찾지 못하면
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
 
 ###################### board 관련 def ########################
 

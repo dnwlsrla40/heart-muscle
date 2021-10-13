@@ -9,6 +9,8 @@
 
 무엇이 어떻게 왜 바뀌었는지를 적는 곳입니다.
 
+**연관 있는 Issue Number (If necessary)**
+
 # Screenshots (If necessary)
 
 필요하다면 사진을 첨부하세요.
