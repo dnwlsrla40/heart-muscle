@@ -1,66 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- 외부 css 파일 불러오기 -->
-    <link rel="stylesheet" type="text/css" href="../static/css/movie.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/header.css">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-
-    <!-- 폰트설정 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
-
-    <title>Heart-Muscle Movie Page</title>
-</head>
-
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark" id="nav-menu">
-    <a class="navbar-brand logo" href="/main">두근득근</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/board-list">게시판 <span class="sr-only">(current)</span></a>
-            </li>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">#}
+{##}
+{#    <!-- 외부 css 파일 불러오기 -->#}
+{#    <link rel="stylesheet" type="text/css" href="../static/css/movie.css">#}
+{#    <link rel="stylesheet" type="text/css" href="../static/css/header.css">#}
+{##}
+{#    <!-- Bootstrap CSS -->#}
+{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"#}
+{#          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+{##}
+{#    <!-- Optional JavaScript -->#}
+{#    <!-- jQuery first, then Popper.js, then Bootstrap JS -->#}
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"#}
+{#            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"#}
+{#            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"#}
+{#            crossorigin="anonymous"></script>#}
+{##}
+{#    <!-- 폰트설정 -->#}
+{#    <link rel="preconnect" href="https://fonts.googleapis.com">#}
+{#    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
+{#    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">#}
+{##}
+{#    <title>Heart-Muscle Movie Page</title>#}
+{#</head>#}
+{##}
+{#<body>#}
+{#<nav class="navbar navbar-expand-lg navbar-dark" id="nav-menu">#}
+{#    <a class="navbar-brand logo" href="/main">두근득근</a>#}
+{#    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"#}
+{#            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#    </button>#}
+{##}
+{#    <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#        <ul class="navbar-nav mr-auto">#}
+{#            <li class="nav-item active">#}
+{#                <a class="nav-link" href="/board-list">게시판 <span class="sr-only">(current)</span></a>#}
+{#            </li>#}
 {#            <li class="nav-item">#}
 {#                <a class="nav-link" href="#">Link</a>#}
 {#            </li>#}
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <button type="button" class="btn btn-outline-light" id="pink">로그인</button>
-        </form>
-    </div>
-</nav>
-<div class="jumbotron" id="jumbotron">
-    <h1 class="display-4">두근득근이 추천하는 {{part}} 운동 홈트 영상!</h1>
-    <input type="hidden" id="part" value="{{ part }}">
-</div>
-
-<div class="card-columns" id="card-box">
-</div>
-
-<!-- 외부 js 파일 불러오기 -->
-<script type="text/javascript" src="../static/js/movie.js"></script>
-</body>
-</html>
+{#        </ul>#}
+{#        <form class="form-inline my-2 my-lg-0">#}
+{#            <button type="button" class="btn btn-outline-light" id="pink">로그인</button>#}
+{#        </form>#}
+{#    </div>#}
+{#</nav>#}
+{#<div class="jumbotron" id="jumbotron">#}
+{#    <h1 class="display-4">두근득근이 추천하는 {{part}} 운동 홈트 영상!</h1>#}
+{#    <input type="hidden" id="part" value="{{ part }}">#}
+{#</div>#}
+{##}
+{#<div class="card-columns" id="card-box">#}
+{#</div>#}
+{##}
+{#<!-- 외부 js 파일 불러오기 -->#}
+{#<script type="text/javascript" src="../static/js/movie.js"></script>#}
+{#</body>#}
+{#</html>#}

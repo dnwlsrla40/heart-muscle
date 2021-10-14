@@ -1,0 +1,107 @@
+#video-body {
+    width: 1600px;
+}
+
+.video-wrap {
+    width: 1400px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.side-nav-box {
+    width: 20%;
+    margin-top: 3%;
+}
+.side-nav {
+    width: 100%;
+}
+
+.video-container {
+    margin-left: 5%;
+    width: 75%
+}
+
+.search-box {
+    width: 100%;
+    margin: auto auto 1% auto;
+    text-align: center;
+}
+
+.search-button-box {
+    display: inline-block;
+    width: 10%
+}
+
+.button-box {
+    width: 100%;
+    margin: 0 0 30px 0;
+    text-align: center;
+}
+
+.exer-btn {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.search-input {
+    display: inline-block;
+    width: 60%;
+    height: 30px;
+    font-size:14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+    padding: 6px;
+    margin: 0 0 10px 10%;
+    border: 3px solid #e3e3e3;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.search-button {
+    display: block;
+    /*width: 10%;*/
+    height: 30px;
+    padding: 0 12px 0 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    line-height: 1.42857143;
+    text-align: center;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    color: #333;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.search-button:hover {
+    background-color: #c5f016;
+}
+
+#content{
+    width: 100%;
+}
+
+#lv0, #lv1, #lv2, #lv3, #lv4 {
+    width: 100%;
+    display: block;
+    float: left;
+}
+
+.index > ul > li{
+    list-style-type: none;
+}
+
+#youtube-box {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}

@@ -16,7 +16,13 @@ db = client.dbMuscle
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('index.html')\
+    return render_template('index.html')
+
+
+# video 관련 된 것을 화면에 찍어주는 html 라우팅
+@app.route('/video', methods=['GET'])
+def get_video_html():
+    return render_template('video.html')
 
 
 @app.route('/video-list', methods=['GET'])
@@ -39,12 +45,58 @@ def get_codes():
     return jsonify(codes)
 
 
+# 전체 video 가져오기
 @app.route('/api/videos', methods=['POST'])
 def get_videos():
     info = request.json
     print("info:", info)
     videos = list(db.videos.find(info, {'_id': False}))
     return jsonify(videos)
+
+
+@app.route('/api/videos/category', methods=['GET'])
+def get_videos_by_category():
+    category = request.args.get('category')
+    print(category)
+    category_videos = list(db.videos.find({'division.category': category}, {'_id': False}))
+    print(category_videos)
+    return jsonify(category_videos)
+
+# @app.route('/api/video/<video_id>', methods=['GET'])
+# def get_video_by_video_id(video_id):
+#     print(video_id)
+#     return
+
+
+# # youtube api 사용해서 검색된 동영상 가져오기
+# @app.route('/api/videos/<search>', methods=['GET'])
+# def get_videos_by_youtube(search):
+#     print(search)
+#
+#     optionParams = {
+#         "q": search,
+#         "part": "snippet",
+#         "key": "AIzaSyARx6jH12f_mg-uAm_1bmlqlR8Ov69bKYY",
+#         "maxResults": "20",
+#         "type": "video",
+#         "videoDuration": "medium",  # 영상 길이 : 4분이상, 20분 이하
+#     }
+#     request_url = "https://www.googleapis.com/youtube/v3/search?"
+#
+#     for option in optionParams:
+#         request_url += option + "=" + optionParams[option] + "&"
+#
+#     data = requests.get(request_url)
+#     jsonized_data = data.json()
+#     comments_list = {
+#         "items": jsonized_data["items"]
+#     }
+#     return jsonify(comments_list)
+
+# # category에서 나눠진 video 가져오기
+# @app.route('/api/video/<video_id>', methods=['GET'])
+# def get_video(video_id):
+
 
 ###################### main 관련 def ########################
 
@@ -140,59 +192,59 @@ def delete_board():
     db.board.delete_one({'title': title_receive}) # 받아온 이름으로 db 삭제하기
     return jsonify({'msg': '삭제 완료'}) #메세지 리턴해주기
 
-###################### movie 관련 def ########################
-
-# movie list 화면에 찍어주는 html 라우팅
-@app.route('/movie', methods=['GET'])
-def get_movie_html():
-    part = request.args.get('part')
-    print("GET /movie: ", part)
-    return render_template('movie.html', part=part)
-
-# movie 상세 동영상 및 정보 화면에 찍어주는 html 라우팅
-@app.route('/movie-detail', methods=['GET'])
-def get_movie_detail_html():
-    return render_template('movie-detail.html')
-
-# movie화면 이동 및 클릭한 데이터값 전달
-@app.route('/movie', methods=['POST'])
-def get_part():
-    part = request.form['part']
-    print("POST: ", part)
-    return jsonify({'data': part})
-
-# youtube api 사용해서 검색된 동영상 가져오기
-@app.route('/api/movies', methods=['GET'])
-def get_youtube_movies():
-    # q = "홈트 "
-    q = request.args.get('q')
-    print(q)
-
-    optionParams = {
-        "q": q,
-        "part": "snippet",
-        "key": "AIzaSyARx6jH12f_mg-uAm_1bmlqlR8Ov69bKYY",
-        "maxResults": "6",
-        "type": "video",
-        "videoDuration": "medium",  # 영상 길이 : 4분이상, 20분 이하
-    }
-    request_url = "https://www.googleapis.com/youtube/v3/search?"
-
-    for option in optionParams:
-        request_url += option + "=" + optionParams[option] + "&"
-
-    data = requests.get(request_url)
-    jsonized_data = data.json()
-    comments_list = {
-        "items": jsonized_data["items"]
-    }
-    return jsonify(comments_list)
-
-@app.route('/movie-detail', methods=['POST'])
-def movie_detail():
-    videoId = request.form["videoId"]
-    print(videoId)
-    return render_template('movie-detail.html', videoId=videoId)
+# ###################### movie 관련 def ########################
+#
+# # movie list 화면에 찍어주는 html 라우팅
+# @app.route('/movie', methods=['GET'])
+# def get_movie_html():
+#     part = request.args.get('part')
+#     print("GET /movie: ", part)
+#     return render_template('movie.html', part=part)
+#
+# # movie 상세 동영상 및 정보 화면에 찍어주는 html 라우팅
+# @app.route('/movie-detail', methods=['GET'])
+# def get_movie_detail_html():
+#     return render_template('movie-detail.html')
+#
+# # movie화면 이동 및 클릭한 데이터값 전달
+# @app.route('/movie', methods=['POST'])
+# def get_part():
+#     part = request.form['part']
+#     print("POST: ", part)
+#     return jsonify({'data': part})
+#
+# # youtube api 사용해서 검색된 동영상 가져오기
+# @app.route('/api/movies', methods=['GET'])
+# def get_youtube_movies():
+#     # q = "홈트 "
+#     q = request.args.get('q')
+#     print(q)
+#
+#     optionParams = {
+#         "q": q,
+#         "part": "snippet",
+#         "key": "AIzaSyARx6jH12f_mg-uAm_1bmlqlR8Ov69bKYY",
+#         "maxResults": "6",
+#         "type": "video",
+#         "videoDuration": "medium",  # 영상 길이 : 4분이상, 20분 이하
+#     }
+#     request_url = "https://www.googleapis.com/youtube/v3/search?"
+#
+#     for option in optionParams:
+#         request_url += option + "=" + optionParams[option] + "&"
+#
+#     data = requests.get(request_url)
+#     jsonized_data = data.json()
+#     comments_list = {
+#         "items": jsonized_data["items"]
+#     }
+#     return jsonify(comments_list)
+#
+# @app.route('/movie-detail', methods=['POST'])
+# def movie_detail():
+#     videoId = request.form["videoId"]
+#     print(videoId)
+#     return render_template('movie-detail.html', videoId=videoId)
 
 # 정대님 좋아요 증가 코드
 @app.route('/api/like', methods=['POST'])
