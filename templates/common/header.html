@@ -2,46 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- 외부 CSS 파일 반영 -->
-    <link rel="stylesheet" type="text/css" href="../static/css/header.css">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+    <title>Title</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand logo" href="#">두근득근</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="">게시판 <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <button type="button" class="btn btn-outline-light">로그인</button>
-        </form>
+<div class="header">
+    <!-- navigation -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="logo">
+                    <a href="index.html"><img src="../static/bootstrap-template/images/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                <div class="navigation pull-right" id="navigation">
+                    <ul>
+                        <li class="active"><a href="/" title="Home" class="animsition-link">Home</a></li>
+                        <li><a href="classes-list.html" title="Classes" class="animsition-link">Classes List</a>
+                            <ul>
+                                <li><a href="classes-list.html" title="Classes List">classes List</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">classes Detail</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="blog-default.html" title="Blog" class="animsition-link">Blog Default</a>
+                            <ul>
+                                <li><a href="blog-default.html" title="Blog" class="animsition-link">Blog Default</a>
+                                </li>
+                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">Blog
+                                    Single</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="testimonial.html" title="Features" class="animsition-link">Features</a>
+                            <ul>
+                                <li><a href="testimonial.html" title="Testimonial"
+                                       class="animsition-link">Testimonial</a></li>
+                                <li><a href="pricing.html" title="Pricing" class="animsition-link">Pricing</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="contact.html" title="Contact Us" class="animsition-link">Contact</a></li>
+                        <li><a href="style-guide.html" title="Style Guide" class="animsition-link">style guide</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-</nav>
+</div>
 </body>
 </html>
