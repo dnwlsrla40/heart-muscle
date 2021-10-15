@@ -1,6 +1,17 @@
 $(document).ready(function () {
     posting_list();
+    login_check();
 });
+
+function login_check(){
+    let check_cookie = document.cookie
+    if (check_cookie == '') {
+        alert("로그인 후 이용해 주세요!")
+        history.pushState(null, null, '/push')
+        window.location.href="/login"
+    }
+}
+
 
 function posting_list() {
     $.ajax({

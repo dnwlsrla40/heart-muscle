@@ -287,7 +287,15 @@ def posting_detail_html():
 ## 피드 목록 화면
 @app.route('/posting/list')
 def posting_list_html():
-    return render_template('posting-list.html')
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.usersdata.find_one({"userid": payload["id"]})
+        return render_template('posting-list.html', uesr_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_page", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return render_template('posting-list.html')
 
 ## 피드 수정 화면
 @app.route('/posting/update')

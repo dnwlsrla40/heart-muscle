@@ -31,7 +31,7 @@ function sign_in() {
         success: function (response) {
             if (response['result'] == 'success') {
                 $.cookie('mytoken', response['token'], {path: '/'});
-                window.location.replace("/posting/list")
+                history.go(-1)
                 alert('로그인 성공!')
             } else {
                 alert(response['msg'])
