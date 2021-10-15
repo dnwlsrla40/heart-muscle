@@ -5,11 +5,7 @@ import boto3
 import jwt
 import hashlib
 import os
-<<<<<<< HEAD
-from flask import Flask, render_template, jsonify, request, redirect, url_for, make_response
-=======
 from flask import Flask, render_template, jsonify, request, redirect, url_for
->>>>>>> a16b439ae3c87e259b5cc444b9cb29f5db74a67c
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 from bson.objectid import ObjectId
@@ -22,10 +18,9 @@ client = MongoClient("mongodb://localhost", 27017)
 
 db = client.dbMuscle
 
-<<<<<<< HEAD
+
 SECRET_KEY = 'MUSCLE'
 
-=======
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 

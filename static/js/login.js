@@ -31,12 +31,9 @@ function sign_in() {
         success: function (response) {
             if (response['result'] == 'success') {
                 $.cookie('mytoken', response['token'], {path: '/'});
-<<<<<<< HEAD
                 window.location.replace("/posting/list")
                 alert('로그인 성공!')
-=======
                 window.location.replace("/main")
->>>>>>> a16b439ae3c87e259b5cc444b9cb29f5db74a67c
             } else {
                 alert(response['msg'])
             }
@@ -147,8 +144,3 @@ function check_dup() {
 
         }
     });
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> a16b439ae3c87e259b5cc444b9cb29f5db74a67c
