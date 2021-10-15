@@ -1,15 +1,21 @@
 import requests
 import time
+import datetime
 import boto3
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+import jwt
+import hashlib
+import os
+from flask import Flask, render_template, jsonify, request, redirect, url_for, make_response
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
 client = MongoClient('localhost', 27017)
 db = client.dbMuscle
+
+SECRET_KEY = 'MUSCLE'
 
 
 ###################### main 관련 def ########################
@@ -106,6 +112,59 @@ def delete_board():
     db.board.delete_one({'title': title_receive}) # 받아온 이름으로 db 삭제하기
     return jsonify({'msg': '삭제 완료'}) #메세지 리턴해주기
 
+#################### 로그인 ######################
+
+# 로그인 페이지 라우팅
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+
+# 회원가입 ID와 비밀번호를 받아서 DB에 저장
+@app.route('/login/sign_up', methods=['POST'])
+def sign_up():
+    userid_receive = request.form['userid_give']
+    password_receive = request.form['password_give']
+    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    doc = {
+        "userid": userid_receive,
+        "password": password_hash
+    }
+    db.usersdata.insert_one(doc)
+    return jsonify({'result': 'success'})
+
+
+# 회원가입 시 ID 중복검사
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+    userid_receive = request.form['userid_give']
+    exists = bool(db.usersdata.find_one({"userid": userid_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
+
+@app.route('/login/sign_in', methods=['POST'])
+def sign_in():
+    # 로그인
+    userid_receive = request.form['userid_give']
+    password_receive = request.form['password_give']
+
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    print(pw_hash)
+    result = db.usersdata.find_one({'userid': userid_receive, 'password': pw_hash})
+    print(userid_receive)
+
+    if result is not None:
+        payload = {
+            'id': userid_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+        return jsonify({'result': 'success', 'token': token})
+    # 찾지 못하면
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
 ###################### movie 관련 def ########################
 
 # movie list 화면에 찍어주는 html 라우팅
@@ -174,7 +233,7 @@ def like_star():
 
     return jsonify({'msg': '좋아요 완료!'})
 
-## 21-10-13 1차 푸시
+#################### 피드 ######################
 
 ## 피드 작성 화면
 @app.route('/posting')
@@ -190,6 +249,11 @@ def posting_detail_html():
 @app.route('/posting/list')
 def posting_list_html():
     return render_template('posting-list.html')
+
+## 피드 수정 화면
+@app.route('/posting/update')
+def posting_update_html():
+    return render_template('posting-update.html')
 
 ## 업로드한 사진 S3 저장 / image url DB에 저장
 @app.route('/fileupload', methods=['POST'])
@@ -226,14 +290,18 @@ def file_upload():
     posting_idx = db.image_url.find_one({'idx': int(max_value)})
     print(posting_idx)
 
-    # update_image = posting_idx['image_url']
-    # print(update_image)
-    # db.posting.update_one({'idx': posting_idx}, {'$set': {'image': update_image}})
     return jsonify({'result': 'success'})
 
 ## 일지 DB 저장
 @app.route('/api/posting', methods=['POST'])
 def posting():
+    token_receive = request.cookies.get('mytoken')
+    print(token_receive)
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    print(payload)
+    userid = payload['id']
+    print(userid)
+
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
 
@@ -277,25 +345,34 @@ def posting():
         'created_at': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
         'views': 0,
         'likes': 0,
-        'idx': max_value
+        'idx': max_value,
+        'userid': userid
     }
 
     db.posting.insert_one(doc)
     return jsonify({'msg': '저장 완료!'})
 
-## 일지 상세내용 불러오기
+# 일지 상세내용 불러오기
 @app.route('/api/posting/detail', methods=['GET'])
 def posting_detail():
+
     idx_receive = request.args.get('idx_give')
     print(idx_receive)
     data = db.posting.find_one({"idx": int(idx_receive)}, {"_id": False})
-    print("result:", data)
+    print(data)
 
     image_data = db.image_url.find_one({"idx": int(idx_receive)}, {"_id": False})
     image = image_data['image_url']
-    print("result:", image)
+    print(image)
 
-    return jsonify(data, image)
+    token_receive = request.cookies.get('mytoken')
+    print(token_receive)
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    print(payload)
+    login_id = payload["id"]
+
+    return jsonify(data, image, login_id)
+
 
 ## 일지 피드에 불러오기
 @app.route('/api/posting/list', methods=['GET'])
@@ -308,21 +385,77 @@ def posting_list():
     print("result:", image)
 
     return jsonify(posts, image)
+
+# 수정할 일지 상세내용 불러오기
+@app.route('/api/posting/update', methods=['GET'])
+def posting_update():
+
+    idx_receive = request.args.get('idx_give')
+    print(idx_receive)
+    data = db.posting.find_one({"idx": int(idx_receive)}, {"_id": False})
+    print(data)
+
+    image_data = db.image_url.find_one({"idx": int(idx_receive)}, {"_id": False})
+    image = image_data['image_url']
+    print(image)
+
+    return jsonify(data, image)
+
+## 수정된 내용 db 업데이트하기 - 안바뀌는 idx 가져오는 방법 찾기
+@app.route('/api/posting/update', methods=['POST'])
+def posting_db_update():
+
+    idx_receive = request.form['idx_give']
+    print("result:", idx_receive)
+
+    title_receive = request.form['title_give']
+    content_receive = request.form['content_give']
+
+    workout_receive_01 = request.form['workout_give_01']
+    min_receive_01 = request.form['min_give_01']
+    time_receive_01 = request.form['time_give_01']
+
+    workout_receive_02 = request.form['workout_give_02']
+    min_receive_02 = request.form['min_give_02']
+    time_receive_02 = request.form['time_give_02']
+
+    workout_receive_03 = request.form['workout_give_03']
+    min_receive_03 = request.form['min_give_03']
+    time_receive_03 = request.form['time_give_03']
+
+    breakfast_receive = request.form['breakfast_give']
+    lunch_receive = request.form['lunch_give']
+    dinner_receive = request.form['dinner_give']
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'title': title_receive}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'content': content_receive}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'workout_give_01': workout_receive_01}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'min_give_01': min_receive_01}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'time_give_01': time_receive_01}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'workout_give_02': workout_receive_02}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'min_give_02': min_receive_02}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'time_give_02': time_receive_02}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'workout_give_03': workout_receive_03}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'min_give_03': min_receive_03}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'time_give_03': time_receive_03}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'breakfast_give': breakfast_receive}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'lunch_give': lunch_receive}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'dinner_give': dinner_receive}})
+
+    return jsonify({'msg': '수정완료!'})
+
+## 피드 삭제하기
+@app.route('/api/posting/delete', methods=['POST'])
+def posting_delete():
+    idx_receive = request.form['idx_give']
+    print("포스팅:", idx_receive)
+    db.posting.delete_one({"idx": int(idx_receive)})
+    db.image_url.delete_one({"idx": int(idx_receive)})
+    return jsonify({'msg': '삭제완료'})
   
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
-
-
-    # # 내유님 조회수 증가
-    # @app.route('/api/view', methods=['POST'])
-    # def update_views():
-    #     writer_receive = request.form['writer_give']
-    #
-    #     target_post = db.board.find_one({'writer': writer_receive})
-    #
-    #     current_like = target_post['views']
-    #     new_like = current_like + 1
-    #
-    #     db.board.update_one({'writer': writer_receive}, {'$set': {'views': new_like}})
-    #
-    #     return jsonify({'msg': '좋아요 완료!'})

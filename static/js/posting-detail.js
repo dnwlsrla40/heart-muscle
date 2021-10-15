@@ -17,6 +17,8 @@ function posting_detail() {
         success: function (response) {
             console.log(response)
 
+            let idx = response[0]['idx']
+
             let title = response[0]['title']
             let content = response[0]['content']
 
@@ -36,9 +38,15 @@ function posting_detail() {
             let lunch = response[0]['lunch']
             let dinner = response[0]['dinner']
 
+
             let image = response[1]
 
-            let temp_html = `
+            let postingid = response[0]['userid']
+            let login_id = response[2]
+
+            console.log(postingid,login_id)
+
+                             let temp_html = `
                                 <div class="row">
                                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                                     <div class="content-area">
@@ -85,7 +93,8 @@ function posting_detail() {
                                                 <div class="widget widget-recent-post">
                                                     <h2 class="widget-title">WORKOUT</h2>
                                                     <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 mb40">                                                                
+                                                        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 mb40">
+                                                                <!-- 운동 데이터 GET 예시-->
                                                                 <div class="recent-block">
                                                                     <div class="recent-content mb30">
                                                                         <!-- recent block -->
@@ -124,7 +133,9 @@ function posting_detail() {
                                                     <div class="row">
                                                         <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 mb40">
                                                             <div class="recent-block">
-                                                                <div class="recent-content mb30">                                                                   
+                                                                <div class="recent-content mb30">
+
+                                                                    <!-- 식단 GET 예시 -->
                                                                     <!-- recent block -->
                                                                     <h3 class="recent-title"><a href="#" class="title">Breakfast</a></h3>
                                                                     <div class="post-meta"><span class="meta-date"><i
@@ -157,10 +168,43 @@ function posting_detail() {
                                     </div>
                                 </div>
 
-                            </div>
+                            </div>                          
                         </div>`
-            $('#posting').append(temp_html)
+                $('#posting').append(temp_html)
 
+            if (postingid === login_id) {
+                let temp_html = `<a onclick="update_post('${idx}')" class="btn btn-default">수정하기</i></a>
+                                 <a onclick="delete_post()" class="btn btn-default">삭제하기</i></a>`
+                $('#update').append(temp_html)
+            }  else {}
+
+        }
+    })
+}
+
+function update_post(idx) {
+    console.log(idx);
+    window.location.href = '/posting/update?idx=' + idx
+}
+
+function delete_post() {
+    var search = location.search
+    console.log("search: ", search)
+    var params = new URLSearchParams(search);
+    console.log("params: ", params)
+    var getType = params.get('idx');
+    console.log("getType: ", getType)
+
+    let idx = getType
+    console.log(idx)
+
+    $.ajax({
+        type: "POST",
+        url: "/api/posting/delete",
+        data: {idx_give: idx},
+        success: function (response) {
+            alert(response['msg']);
+            window.location.href = "/posting/list"
         }
     })
 }

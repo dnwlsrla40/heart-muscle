@@ -10,11 +10,6 @@ function posting_list() {
         success: function (response) {
             console.log(response)
 
-            // let title = response[0][0]['title']
-            // let image = response[1][0]['image_url']
-            //
-            // console.log(title,image)
-
             for (let i = 0; i < response[1].length; i++) {
                 let title = response[0][i]['title']
                 let image = response[1][i]['image_url']
@@ -39,7 +34,7 @@ function posting_list() {
 <!--                                                </a>유저아이디-->
                                                 </h5>
                                             </div>
-                                            <div class="post-meta"> <span class="meta-date"><i class="icon-primary icon-1x icon-calendar"></i>${time_before}</span></div>
+                                            <div class="post-meta"><span class="meta-date"><i class="fas fa-history"></i>${time_before}</span></div>
                                         </div>
                                     </div>
                                 </div>
