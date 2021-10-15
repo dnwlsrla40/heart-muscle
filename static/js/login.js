@@ -33,7 +33,6 @@ function sign_in() {
                 $.cookie('mytoken', response['token'], {path: '/'});
                 window.location.replace("/posting/list")
                 alert('로그인 성공!')
-                window.location.replace("/main")
             } else {
                 alert(response['msg'])
             }
@@ -144,3 +143,4 @@ function check_dup() {
 
         }
     });
+}
