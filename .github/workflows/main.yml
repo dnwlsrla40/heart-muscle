@@ -1,8 +1,7 @@
 name: heart-muscle
 on:
   push:
-    branches:
-      - git-action
+    branches: [master, git-action]
 jobs:
   build:
     runs-on: ubuntu-latest
