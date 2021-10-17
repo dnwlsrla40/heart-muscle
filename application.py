@@ -1,5 +1,4 @@
 import boto3
-import requests
 import time
 import jwt
 import hashlib
