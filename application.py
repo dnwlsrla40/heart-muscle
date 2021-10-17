@@ -41,14 +41,14 @@ def get_video_list_html():
 @application.route('/question', methods=['GET'])
 def get_question():
     codes = list(db.question.find({}).distinct('group'))
-    print(codes)
+    # print(codes)
     return jsonify(codes)
 
 
 @application.route('/codes', methods=['GET'])
 def get_codes():
     group = request.args.get('group')
-    print("group:" + group)
+    # print("group:" + group)
     codes = list(db.question.find({'group': group}, {'_id': False}))
     return jsonify(codes)
 
@@ -69,49 +69,6 @@ def get_videos_by_category():
     category_videos = list(db.videos.find({'division.category': category}, {'_id': False}))
     print(category_videos)
     return jsonify(category_videos)
-
-# @application.route('/api/video/<video_id>', methods=['GET'])
-# def get_video_by_video_id(video_id):
-#     print(video_id)
-#     return
-
-
-# # youtube api 사용해서 검색된 동영상 가져오기
-# @application.route('/api/videos/<search>', methods=['GET'])
-# def get_videos_by_youtube(search):
-#     print(search)
-#
-#     optionParams = {
-#         "q": search,
-#         "part": "snippet",
-#         "key": "AIzaSyARx6jH12f_mg-uAm_1bmlqlR8Ov69bKYY",
-#         "maxResults": "20",
-#         "type": "video",
-#         "videoDuration": "medium",  # 영상 길이 : 4분이상, 20분 이하
-#     }
-#     request_url = "https://www.googleapis.com/youtube/v3/search?"
-#
-#     for option in optionParams:
-#         request_url += option + "=" + optionParams[option] + "&"
-#
-#     data = requests.get(request_url)
-#     jsonized_data = data.json()
-#     comments_list = {
-#         "items": jsonized_data["items"]
-#     }
-#     return jsonify(comments_list)
-
-# # category에서 나눠진 video 가져오기
-# @application.route('/api/video/<video_id>', methods=['GET'])
-# def get_video(video_id):
-
-
-###################### main 관련 def ########################
-
-# main 페이지 라우팅
-@application.route('/main', methods=['GET'])
-def main():
-    return render_template('main.html')
 
 ###################### 로그인 & 회원가입 관련 def ###############
 
