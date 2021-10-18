@@ -16,8 +16,7 @@ client = MongoClient("mongodb://localhost", 27017)
 
 db = client.dbMuscle
 
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = 'SPARTA'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 
@@ -213,10 +212,7 @@ def get_board_detail():
     idx_receive = int(request.args.get('idx_give'))
     data = db.boards.find_one({'idx': idx_receive}, {'_id': False})
     print("result:", data)
-    # return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
     return jsonify({"data": data, "login_id": login_id})
-
-    # return jsonify(data, image, login_id)
 
 
 # board create 화면에 찍어주는 html 라우팅
