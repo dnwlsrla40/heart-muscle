@@ -12,7 +12,8 @@ application = Flask(__name__)
 cors = CORS(application, resources={r"/*": {"origins": "*"}})
 
 # client = MongoClient('mongodb://test:test@localhost', 27017)
-client = MongoClient("mongodb://localhost", 27017)
+# client = MongoClient("mongodb://localhost", 27017)
+client = MongoClient(os.environ.get("MONGO_DB_PATH"))
 
 db = client.dbMuscle
 
