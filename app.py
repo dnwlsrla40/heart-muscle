@@ -11,12 +11,12 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-# client = MongoClient('mongodb://test:test@localhost', 27017)
+
 client = MongoClient("mongodb://localhost", 27017)
 
 db = client.dbMuscle
-SECRET_KEY = 'SPARTA'
-# SECRET_KEY = os.environ.get('SECRET_KEY')
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 
