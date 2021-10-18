@@ -19,8 +19,6 @@ db = client.dbMuscle
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
-
-
 ###################### new Template 관련 def ########################
 
 @app.route('/', methods=['GET'])
@@ -436,7 +434,7 @@ def delete_board():
 #     return render_template('movie-detail.html', videoId=videoId)
 
 
-## 21-10-13 1차 푸시
+#################### 피드 ######################
 
 ## 피드 작성 화면
 @app.route('/posting')
@@ -455,6 +453,11 @@ def posting_detail_html():
 def posting_list_html():
     return render_template('posting-list.html')
 
+
+## 피드 수정 화면
+@app.route('/posting/update')
+def posting_update_html():
+    return render_template('posting-update.html')
 
 ## 업로드한 사진 S3 저장 / image url DB에 저장
 @app.route('/fileupload', methods=['POST'])
@@ -489,16 +492,19 @@ def file_upload():
 
     posting_idx = db.image_url.find_one({'idx': int(max_value)})
     print(posting_idx)
-
-    # update_image = posting_idx['image_url']
-    # print(update_image)
-    # db.posting.update_one({'idx': posting_idx}, {'$set': {'image': update_image}})
     return jsonify({'result': 'success'})
 
 
 ## 일지 DB 저장
 @app.route('/api/posting', methods=['POST'])
 def posting():
+    token_receive = request.cookies.get('mytoken')
+    print(token_receive)
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    print(payload)
+    userid = payload['id']
+    print(userid)
+
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
 
@@ -541,38 +547,164 @@ def posting():
         'dinner': dinner_receive,
         'created_at': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
         'views': 0,
-        'likes': 0,
-        'idx': max_value
+        'idx': max_value,
+        'userid': userid
     }
 
     db.posting.insert_one(doc)
     return jsonify({'msg': '저장 완료!'})
 
 
-## 일지 상세내용 불러오기
+# 일지 상세내용 불러오기
+
 @app.route('/api/posting/detail', methods=['GET'])
 def posting_detail():
+
     idx_receive = request.args.get('idx_give')
     print(idx_receive)
     data = db.posting.find_one({"idx": int(idx_receive)}, {"_id": False})
-    print("result:", data)
+    print(data)
 
     image_data = db.image_url.find_one({"idx": int(idx_receive)}, {"_id": False})
     image = image_data['image_url']
-    print("result:", image)
+    print(image)
 
-    return jsonify(data, image)
+    token_receive = request.cookies.get('mytoken')
+    print(token_receive)
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    print(payload)
+    login_id = payload["id"]
+
+    return jsonify(data, image, login_id)
+
 
 
 ## 일지 피드에 불러오기
 @app.route('/api/posting/list', methods=['GET'])
 def posting_list():
-    posts = list(db.posting.find({}, {'_id': False}))
-    print("result:", posts)
 
     image = list(db.image_url.find({}, {'_id': False}))
     print("result:", image)
+    
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        posts = list(db.posting.find({}).sort("date", -1))
+        for post in posts:
+            # post['idx'] = str(post["idx"])
+            # print("확인1", post['idx'])
+            post["_id"] = str(post["_id"])
+            print("result:아아", post["_id"])
+            post["count_heart"] = db.likes.count_documents({"post_idx": str(post["idx"]), "type": "heart"})
+            print("확인2", post["count_heart"])
+            post["heart_by_me"] = bool(db.likes.find_one({"post_idx": str(post["idx"]), "type": "heart", "userid": payload['id']}))
+            print("확인3", post['heart_by_me'])
 
+        return jsonify(posts, image)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+# 수정할 일지 상세내용 불러오기
+@app.route('/api/posting/update', methods=['GET'])
+def posting_update():
+
+    idx_receive = request.args.get('idx_give')
+    print(idx_receive)
+    data = db.posting.find_one({"idx": int(idx_receive)}, {"_id": False})
+    print(data)
+
+    image_data = db.image_url.find_one({"idx": int(idx_receive)}, {"_id": False})
+    image = image_data['image_url']
+    print(image)
+
+    return jsonify(data, image)
+
+## 수정된 내용 db 업데이트하기
+@app.route('/api/posting/update', methods=['POST'])
+def posting_db_update():
+
+    idx_receive = request.form['idx_give']
+
+    title_receive = request.form['title_give']
+    content_receive = request.form['content_give']
+
+    workout_receive_01 = request.form['workout_give_01']
+    min_receive_01 = request.form['min_give_01']
+    time_receive_01 = request.form['time_give_01']
+
+    workout_receive_02 = request.form['workout_give_02']
+    min_receive_02 = request.form['min_give_02']
+    time_receive_02 = request.form['time_give_02']
+
+    workout_receive_03 = request.form['workout_give_03']
+    min_receive_03 = request.form['min_give_03']
+    time_receive_03 = request.form['time_give_03']
+
+    breakfast_receive = request.form['breakfast_give']
+    lunch_receive = request.form['lunch_give']
+    dinner_receive = request.form['dinner_give']
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'title': title_receive}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'content': content_receive}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'workout_01': workout_receive_01}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'min_01': min_receive_01}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'time_01': time_receive_01}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'workout_02': workout_receive_02}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'min_02': min_receive_02}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'time_02': time_receive_02}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'workout_03': workout_receive_03}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'min_03': min_receive_03}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'time_03': time_receive_03}})
+
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'breakfast': breakfast_receive}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'lunch': lunch_receive}})
+    db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'dinner': dinner_receive}})
+
+    return jsonify({'msg': '수정완료!'})
+
+## 피드 좋아요
+@app.route('/posting/update/like', methods=['POST'])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # 좋아요 수 변경
+        user_info = db.usersdata.find_one({"userid": payload["id"]})
+        print("userinfo", user_info)
+        post_idx_receive = request.form["post_idx_give"]
+        print("idxreceive", post_idx_receive)
+        type_receive = request.form["type_give"]
+        action_receive = request.form["action_give"]
+        print("action", action_receive)
+        doc = {
+            "post_idx": post_idx_receive,
+            "userid": user_info["userid"],
+            "type": type_receive
+        }
+        if action_receive == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+        count = db.likes.count_documents({"post_idx": post_idx_receive, "type": type_receive})
+        return jsonify({"result": "success", 'msg': 'updated', "count": count})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+## 피드 삭제하기
+@app.route('/api/posting/delete', methods=['POST'])
+def posting_delete():
+    idx_receive = request.form['idx_give']
+    print("포스팅:", idx_receive)
+    db.posting.delete_one({"idx": int(idx_receive)})
+    db.image_url.delete_one({"idx": int(idx_receive)})
+    return jsonify({'msg': '삭제완료'})
+  
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
+=======
     return jsonify(posts, image)
 
 if __name__ == '__main__':
