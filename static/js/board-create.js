@@ -1,13 +1,25 @@
+$(document).ready(function () {
+    login_check();
+});
+
+function login_check(){
+    let check_cookie = document.cookie
+    if (check_cookie == '') {
+        alert("로그인 후 이용해 주세요!")
+        history.pushState(null, null, '/push')
+        window.location.href="/login"
+    }
+}
+
 function writeDiary() {
-    let writer = $('#writer').val();
     let title = $('#title').val();
     let content = $('#content').val();
 
     $.ajax({
         type: "POST",
-        url: "/api/board",
+        url: "/api/post",
         dataType: "json",
-        data: {writer_give: writer, title_give: title, content_give: content},
+        data: {title_give: title, content_give: content},
         success: function (response) {
             alert(response["msg"]);
             window.location.reload();
