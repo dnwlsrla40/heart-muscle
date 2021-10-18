@@ -139,7 +139,8 @@ def get_posts():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        boards = list(db.boards.find({}).sort("date", -1).limit(20))
+        # boards = list(db.boards.find({}).sort("date", -1).limit(20))
+        boards = list(db.boards.find({}).sort("date", -1))
         for board in boards:
             board["_id"] = str(board["_id"])
             board["count_heart"] = db.likes.count_documents({"board_id": board["_id"], "type": "heart"})
