@@ -173,7 +173,8 @@ def get_posts():
         print(board["heart_by_me"])
         print(board["count_heart"])
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
-
+    except:
+        return
 
 
 # QnA 조회수 증가
