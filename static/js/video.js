@@ -110,4 +110,5 @@ function getVideoDetail(video_id) {
 
     $('#youtube-box').empty()
     $('#video-content').prepend(temp_html)
+    $('html').scrollTop(0)
 }
