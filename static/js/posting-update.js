@@ -272,6 +272,7 @@ function posting_db_update() {
             console.log(response)
             window.location.href = '/posting/detail?idx=' + idx
             
+
         }
     })
 }
