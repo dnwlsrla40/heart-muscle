@@ -11,10 +11,13 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+
+client = MongoClient("mongodb://localhost", 27017)
+
 db = client.dbMuscle
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 ###################### new Template 관련 def ########################
 
@@ -66,6 +69,7 @@ def get_videos_by_category():
     print(category_videos)
     return jsonify(category_videos)
 
+
 # @app.route('/api/video/<video_id>', methods=['GET'])
 # def get_video_by_video_id(video_id):
 #     print(video_id)
@@ -97,6 +101,49 @@ def get_videos_by_category():
 #     }
 #     return jsonify(comments_list)
 
+# # category에서 나눠진 video 가져오기
+# @app.route('/api/video/<video_id>', methods=['GET'])
+# def get_video(video_id):
+
+
+###################### main 관련 def ########################
+
+# main 페이지 라우팅
+@app.route('/main', methods=['GET'])
+def main():
+    return render_template('main.html')
+
+
+###################### 로그인 & 회원가입 관련 def ###############
+
+# 로그인 페이지 라우팅
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+
+# # 회원가입 ID와 비밀번호를 받아서 DB에 저장
+# @app.route('/login/sign_up', methods=['POST'])
+# def sign_up():
+#     userid_receive = request.form['userid_give']
+#     password_receive = request.form['password_give']
+#     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+#     doc = {
+#         "userid": userid_receive,
+#         "password": password_hash
+#     }
+#     request_url = "https://www.googleapis.com/youtube/v3/search?"
+#
+#     for option in optionParams:
+#         request_url += option + "=" + optionParams[option] + "&"
+#
+#     data = requests.get(request_url)
+#     jsonized_data = data.json()
+#     comments_list = {
+#         "items": jsonized_data["items"]
+#     }
+#     return jsonify(comments_list)
+#
 # # category에서 나눠진 video 가져오기
 # @app.route('/api/video/<video_id>', methods=['GET'])
 # def get_video(video_id):
@@ -163,92 +210,174 @@ def sign_in():
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
-###################### board 관련 def ########################
+###################### 득근 QnA ########################
 
 # board list 화면에 찍어주는 html 라우팅
 @app.route('/board-list', methods=['GET'])
 def get_board_list_html():
     return render_template('board-list.html')
 
-# board create 화면에 찍어주는 html 라우팅
-@app.route('/board-create')
-def get_board_create_html():
-    return render_template('board-create.html')
+
+@app.route("/get-posts", methods=['GET'])
+def get_posts():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        boards = list(db.boards.find({}).sort("date", -1).limit(20))
+        for board in boards:
+            board["_id"] = str(board["_id"])
+            board["count_heart"] = db.likes.count_documents({"board_id": board["_id"], "type": "heart"})
+            board["heart_by_me"] = bool(
+                db.likes.find_one({"board_id": board["_id"], "type": "heart", "userid": payload['id']}))
+            print(board["_id"])
+            print(type(board["_id"]))
+            print(board["heart_by_me"])
+        print(boards)
+        print(board["heart_by_me"])
+        print(board["count_heart"])
+        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("login_page"))
+
+
+# 내윤님 조회수 증가
+@app.route('/api/views', methods=['POST'])
+def update_views():
+    idx_receive = int(request.form['idx_give'])
+
+    target_post = db.boards.find_one({'idx': idx_receive})
+
+    current_views = target_post['views']
+    new_views = current_views + 1
+
+    db.boards.update_one({'idx': idx_receive}, {'$set': {'views': new_views}})
+
+    return jsonify({'msg': '조회수 업데이트 완료!'})
+
+
+# 좋아요 코드
+@app.route('/update_like', methods=['POST'])
+def like_star():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.usersdata.find_one({"userid": payload["id"]})
+        board_id_receive = request.form["board_id_give"]
+        type_receive = request.form["type_give"]
+        action_receive = request.form["action_give"]
+        doc = {
+            "board_id": board_id_receive,
+            "userid": user_info["userid"],
+            "type": type_receive
+        }
+        if action_receive == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+        count = db.likes.count_documents({"board_id": board_id_receive, "type": type_receive})
+        return jsonify({"result": "success", 'msg': 'updated', "count": count})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("login_page"))
+
 
 # board detail 화면에 찍어주는 html 라우팅
 @app.route('/board-detail')
 def get_board_detail_html():
     return render_template('board-detail.html')
 
+
+# board 하나 가져오는 기능
+@app.route('/api/board/post', methods=['GET'])
+def get_board_detail():
+    idx_receive = int(request.args.get('idx_give'))
+    data = db.boards.find_one({'idx': idx_receive}, {'_id': False})
+    print("result:", data)
+    # return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
+    return jsonify({"data": data})
+
+
+# board create 화면에 찍어주는 html 라우팅
+@app.route('/board-create')
+def get_board_create_html():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('board-create.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login_page", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return render_template('board-create.html')
+
+        # return redirect(url_for("login_page", msg="로그인 정보가 존재하지 않습니다."))
+
+
+# board 작성(저장) 기능
+@app.route('/api/post', methods=['POST'])
+def board_create():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.usersdata.find_one({"userid": payload["id"]})
+    title_receive = request.form['title_give']
+    content_receive = request.form['content_give']
+
+    boards_count = db.boards.count()
+    if boards_count == 0:
+        max_value = 1
+    else:
+        max_value = db.boards.find_one(sort=[("idx", -1)])['idx'] + 1
+
+    if title_receive == "" or content_receive == "":
+        return jsonify({'msg': '빈칸에 내용을 입력해주세요!'})
+
+    doc = {
+        'idx': max_value,
+        "userid": user_info["userid"],
+        'title': title_receive,
+        'content': content_receive,
+        'created_at': time.strftime('%Y-%m-%d', time.localtime(time.time())),
+        'views': 0,
+    }
+
+    db.boards.insert_one(doc)
+    return jsonify({"result": "success", 'msg': '포스팅 성공'})
+
+
 # board update 화면에 찍어주는 html 라우팅
 @app.route('/board-update')
 def get_board_update_html():
     return render_template('board-update.html')
 
-# board list 가져오는 기능
-@app.route('/api/board-list', methods=['GET'])
-def get_board_list():
-    logs = list(db.board.find({}, {'_id': False}))
-    return jsonify({'all_logs': logs})
-
-
-# board 작성(저장) 기능
-@app.route('/api/board', methods=['POST'])
-def save_board():
-    writer_receive = request.form['writer_give']
-    title_receive = request.form['title_give']
-    content_receive = request.form['content_give']
-
-    if writer_receive == "" or title_receive == "" or content_receive == "":
-        return jsonify({'msg': '빈칸에 내용을 입력해주세요!'})
-
-    else:
-        doc = {
-            'writer': writer_receive,
-            'title': title_receive,
-            'content': content_receive,
-            'created_at': time.strftime('%Y-%m-%d', time.localtime(time.time())),
-            'views': 0,
-            'likes': 0,
-            'count': db.board.count() + 1
-        }
-
-        db.board.insert_one(doc)
-        return jsonify({'msg': '저장 완료!'})
-
-# board 하나 가져오는 기능
-@app.route('/api/board/<id>', methods=['GET'])
-def get_board_detail(id):
-    writer_receive = request.args.get('writer_give')  # 내용받고
-
-    data = db.board.find_one({"writer": writer_receive}, {"_id": False})
-    print("result:", data)
-
-    return jsonify(data)
 
 # 수정 페이지에서 값 받아오기
 @app.route('/api/board-update', methods=['GET'])
 def update_board():
-    content_receive = request.args.get('content_give')
-    content_data = db.board.find_one({'content': content_receive}, {'_id': False})
-    return jsonify(content_data)
+    print(request.args.get('idx_give'))
+    print(type(request.args.get('idx_give')))
+    idx_receive = int(request.args.get('idx_give'))
+    print(idx_receive)
+    content_data = db.boards.find_one({'idx': idx_receive}, {'_id': False})
+    print(content_data)
+    return jsonify({'content_data': content_data})
+
 
 @app.route('/api/board-update', methods=['POST'])
 def update_board_content():
-    content_receive = request.form['content_give']
-    update_receive = request.form['update_content_give'] #수정할 텍스트를 받아왔음
-    title_receive = request.form['title_give'] #받아온타이틀
-    print(content_receive, update_receive, title_receive)
-    db.board.update_one({'content': content_receive}, {"$set": {'title': title_receive}})
-    db.board.update_one({'content': content_receive}, {"$set": {'content': update_receive}})
-    return jsonify({'msg': '완료'})
+    idx_receive = int((request.form['idx_give']))
+    update_receive = request.form['update_content_give']  # 수정할 텍스트를 받아왔음
+    title_receive = request.form['title_give']  # 받아온타이틀
+    db.boards.update_one({'idx': idx_receive}, {"$set": {'title': title_receive}})
+    db.boards.update_one({'idx': idx_receive}, {"$set": {'content': update_receive}})
+    return jsonify({'msg': '저장 완료!'})
+
 
 # board 하나 제거하는 기능
 @app.route('/api/delete', methods=['POST'])
 def delete_board():
-    title_receive = request.form['title_give'] #이름 받아오기
-    db.board.delete_one({'title': title_receive}) # 받아온 이름으로 db 삭제하기
-    return jsonify({'msg': '삭제 완료'}) #메세지 리턴해주기
+    idx_receive = int((request.form['idx_give']))
+    db.boards.delete_one({'idx': idx_receive})  # 받아온 이름으로 db 삭제하기
+    return jsonify({'msg': '삭제 완료!'})  # 메세지 리턴해주기
+
 
 # ###################### movie 관련 def ########################
 #
@@ -304,19 +433,6 @@ def delete_board():
 #     print(videoId)
 #     return render_template('movie-detail.html', videoId=videoId)
 
-# 정대님 좋아요 증가 코드
-@app.route('/api/like', methods=['POST'])
-def like_star():
-    writer_receive = request.form['writer_give']
-
-    target_post = db.board.find_one({'writer': writer_receive})
-
-    current_like = target_post['likes']
-    new_like = current_like + 1
-
-    db.board.update_one({'writer': writer_receive}, {'$set': {'likes': new_like}})
-
-    return jsonify({'msg': '좋아요 완료!'})
 
 #################### 피드 ######################
 
@@ -325,15 +441,18 @@ def like_star():
 def posting_html():
     return render_template('posting-save.html')
 
+
 ## 피드 상세 화면
 @app.route('/posting/detail')
 def posting_detail_html():
     return render_template('posting-detail.html')
 
+
 ## 피드 목록 화면
 @app.route('/posting/list')
 def posting_list_html():
     return render_template('posting-list.html')
+
 
 ## 피드 수정 화면
 @app.route('/posting/update')
@@ -364,7 +483,6 @@ def file_upload():
     else:
         max_value = db.image_url.find_one(sort=[("idx", -1)])['idx'] + 1
 
-
     doc = {
         'image_url': image_url,
         'idx': max_value
@@ -375,6 +493,7 @@ def file_upload():
     posting_idx = db.image_url.find_one({'idx': int(max_value)})
     print(posting_idx)
     return jsonify({'result': 'success'})
+
 
 ## 일지 DB 저장
 @app.route('/api/posting', methods=['POST'])
@@ -435,7 +554,9 @@ def posting():
     db.posting.insert_one(doc)
     return jsonify({'msg': '저장 완료!'})
 
+
 # 일지 상세내용 불러오기
+
 @app.route('/api/posting/detail', methods=['GET'])
 def posting_detail():
 
@@ -457,13 +578,14 @@ def posting_detail():
     return jsonify(data, image, login_id)
 
 
+
 ## 일지 피드에 불러오기
 @app.route('/api/posting/list', methods=['GET'])
 def posting_list():
 
     image = list(db.image_url.find({}, {'_id': False}))
     print("result:", image)
-
+    
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -582,3 +704,22 @@ def posting_delete():
   
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+=======
+    return jsonify(posts, image)
+
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
+
+    # # 내유님 조회수 증가
+    # @app.route('/api/view', methods=['POST'])
+    # def update_views():
+    #     writer_receive = request.form['writer_give']
+    #
+    #     target_post = db.board.find_one({'writer': writer_receive})
+    #
+    #     current_like = target_post['views']
+    #     new_like = current_like + 1
+    #
+    #     db.board.update_one({'writer': writer_receive}, {'$set': {'views': new_like}})
+    #
+    #     return jsonify({'msg': '좋아요 완료!'})

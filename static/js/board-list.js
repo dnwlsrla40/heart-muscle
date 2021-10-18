@@ -1,61 +1,127 @@
-$(function () {
-    show_list();
+$(document).ready(function () {
+     get_board_list();
 });
 
-function show_list() {
+function toggle_like(board_id, type) {
+    console.log(board_id, type)
+    let $a_like = $(`#${board_id} a[aria-label='heart']`)
+    let $i_like = $a_like.find("i")
+    if ($i_like.hasClass("fas")) {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                board_id_give: board_id,
+                type_give: type,
+                action_give: "unlike"
+            },
+            success: function (response) {
+                console.log("unlike")
+                $i_like.addClass("far").removeClass("fas")
+                $a_like.find("span.like-num").text(num2str(response["count"]))
+            }
+        })
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                board_id_give: board_id,
+                type_give: type,
+                action_give: "like"
+            },
+            success: function (response) {
+                console.log("like")
+                $i_like.addClass("fas").removeClass("far")
+                $a_like.find("span.like-num").text(num2str(response["count"]))
+            }
+        })
+
+    }
+}
+
+
+function get_board_list() {
+    // if (userid==undefined) {
+    //     userid=""
+    // }
+    // $("#post-box").empty()
     $.ajax({
         type: "GET",
-        url: "/api/board-list",
+        url: `/get-posts`,
         data: {},
         success: function (response) {
-            let logs = response['all_logs'];
-            for (let i = 0; i < logs.length; i++) {
-                let created_at = logs[i]['created_at']
-                let writer = logs[i]['writer']
-                let title = logs[i]['title']
-                let like = logs[i]['likes']
-                let views = logs[i]['views']
-
-                let temp_html = `<tr>
-                                     <th scope="row">${i + 1}</th>
-                                     <td>${created_at}</td>
-                                     <td onclick="update_views('${writer}');show_detail('${writer}');"><button type="button" id="writer-button" class="btn btn-link">${writer}</button></td>
-                                     <td>${title}</td>
-                                     <td>
-                                         <div target="_blank" class="star-writer">좋아요: ${like}</div>
-                                         <a href="#" onclick="like_star('${writer}')" class="card-footer-item has-text-info"><i class="far fa-thumbs-up"></i></a>
-                                     </td>
-                                     <td>${views}</td>
-                                  </tr>`
-                $('#log_table').append(temp_html)
+            if (response["result"] == "success") {
+                let boards = response["boards"]
+                console.log(boards)
+                for (let i = 0; i < boards.length; i++) {
+                    let board = boards[i]
+                    let created_at = boards[i]['created_at']
+                    let idx = boards[i]['idx']
+                    console.log(typeof(idx))
+                    let userid = boards[i]['userid']
+                    let title = boards[i]['title']
+                    let views = boards[i]['views']
+                    let _id = boards[i]['_id']
+                    console.log(board["heart_by_me"])
+                    // let class_heart = board['heart_by_me'] ? "fas" : "far"
+                    let class_heart = ""
+                    if (board["heart_by_me"]) {
+                        class_heart = "fas"
+                    } else {
+                        class_heart = "far"
+                    }
+                    let count_heart = board['count_heart']
+                    let temp_html = `<tr id="${board["_id"]}">
+                                         <th scope="row">${idx}</th>
+                                         <td>${created_at}</td>
+                                         <td onclick="updateViews('${idx}');showDetail('${idx}');"><button class="button is-ghost">${userid}</button></td>
+                                         <td>${title}</td>
+                                         <td class="container">
+                                             <nav class="level is-mobile">
+                                                <div class="level-left">
+                                                    <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('${board['_id']}', 'heart')">
+                                                        <span class="icon is-small"><i class="${class_heart} fa-thumbs-up"
+                                                                                       aria-hidden="true"></i></span>&nbsp;<span class="like-num">${num2str(count_heart)}</span>
+                                                    </a>
+                                                </div>
+                                            </nav>
+                                         </td>
+                                         <td>${views}</td>
+                                      </tr>`
+                $('#post_table').append(temp_html)
+                }
             }
         }
     })
 }
 
-function show_detail(writer) {
-    console.log(writer)
-    window.location.href='/board-detail?writer='+writer
+
+function showDetail(idx) {
+    console.log(idx)
+    window.location.href='/board-detail?idx='+idx
 }
 
-function update_views(writer) {
+function updateViews(idx) {
     $.ajax({
         type: 'POST',
-        url: '/api/view',
-        data: {writer_give: writer},
+        url: '/api/views',
+        data: {idx_give: idx},
         success: function (response) {
         }
     });
 }
 
-function like_star(writer) {
-    $.ajax({
-        type: 'POST',
-        url: '/api/like',
-        data: {writer_give: writer},
-        success: function (response) {
-            alert(response['msg']);
-            window.location.reload()
-        }
-    });
+
+function num2str(count) {
+    if (count > 10000) {
+        return parseInt(count / 1000) + "k"
+    }
+    if (count > 500) {
+        return parseInt(count / 100) / 10 + "k"
+    }
+    if (count == 0) {
+        return ""
+    }
+    return count
 }
