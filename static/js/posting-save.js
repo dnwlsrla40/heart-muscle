@@ -44,7 +44,7 @@ function posting() {
         },
         success: function (response) {
             alert(response["msg"]);
-            window.location.reload();
+            window.location.href = '/posting/list'
         }
     })
 }

@@ -72,7 +72,7 @@ p:last-child { margin-bottom: 0px; }
 ul, ol { margin: 0; }
 ul li, ol li { line-height: 1.9; }
 a { color: #848484; text-decoration: none; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
-a:focus, a:hover { text-decoration: none; color: pink; }
+a:focus, a:hover { text-decoration: none; color: #c5f016; }
 strong { color: #fff; }
 blockquote { font-size: 18px; padding-left: 0px; border-left: 0px; text-transform: uppercase; }
 blockquote p { font-size: 32px; color: #fff; font-weight: 700; line-height: 50px; }
@@ -254,7 +254,7 @@ padding-top: 3px; }
 .feature-inner { }
 .feature-outline { }
 .thumbnail-block { }
-.thumbnail-img { height:210px; width: 380px; margin-bottom: 15px; }
+.thumbnail-img { }
 .thumbnail-content { }
 .thumbnail-inner { }
 .thumbnail-outline { }
@@ -274,11 +274,11 @@ padding-top: 3px; }
 /*--------------------------------
  4.7 Call to actions 
 ----------------------------------*/
-.cta { background-size: cover; margin: 0; min-height: 410px; border: none; padding: 100px 0px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), rgba(0, 0, 0, 0.1) url(../images/cta.jpg) no-repeat center; }
+.cta { background-size: cover; margin: 0; min-height: 410px; border: none; padding: 100px 0px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), rgba(0, 0, 0, 0.1) url(../static/images/cta.jpg) no-repeat center; }
 .cta-title { font-size: 32px; line-height: 46px; color: #fff; margin-bottom: 30px; }
 .cta-info { }
 .cta-content { }
-.cta-img { background-size: cover; margin: 0; min-height: 0px; border: none; padding: 0px 0px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), rgba(0, 0, 0, 0.1) url(../images/side-cta-img.jpg) no-repeat center; }
+.cta-img { background-size: cover; margin: 0; min-height: 0px; border: none; padding: 0px 0px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), rgba(0, 0, 0, 0.1) url(../static/images/side-cta-img.jpg) no-repeat center; }
 .offer-price { font-size: 28px; line-height: 36px; color: #bce31c; font-weight: 600; }
 .news-letter-box { }
 .news-letter-content {    padding: 0px 40px 40px 40px; }
@@ -343,9 +343,9 @@ img { width: auto; max-width: 100%; height: auto; margin: 0; padding: 0; border:
 /*--------------------------
      5.2 Navigations Regular
     ----------------------------*/
-.hero-section { background: linear-gradient(rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3)), url(../images/hero-img.jpg) no-repeat center; background-size: cover; }
+.hero-section { background: linear-gradient(rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3)), url(../static/images/hero-img.jpg) no-repeat center; background-size: cover; }
 .hero-caption { margin-top: 125px; margin-bottom: 125px; background-color: #262626; }
-.hero-title { font-size: 32px; color: #fff; line-height: 24px; font-weight: 600; text-transform: uppercase; margin-bottom: 20px; }
+.hero-title { font-size: 32px; color: #fff; line-height: 24px; font-weight: 600; text-transform: uppercase; }
 .hero-text { font-size: 16px; color: #acacac; margin-bottom: 50px; line-height: 26px; }
 .navigation { }
 #navigation, #navigation ul, #navigation ul li, #navigation ul li a, #navigation #menu-button { margin: 0; padding: 0; border: 0; list-style: none; line-height: 1; display: block; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
@@ -421,7 +421,7 @@ visibility: hidden; line-height: 0; height: 0;}*/
 /*----------------------------------------------
      5.4 Page Header
  ----------------------------------------------*/
-.page-header { background: linear-gradient(rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3)), url(../images/page-header.jpg) no-repeat center; background-size: cover; margin: 0; }
+.page-header { background: linear-gradient(rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3)), url(../static/images/page-header.jpg) no-repeat center; background-size: cover; margin: 0; }
 .page-caption { margin-top: 50px; margin-bottom: 50px; background-color: #262626; }
 .page-title { color: #fff; font-size: 33px; margin-bottom: 30px; }
 .breadcrumb { }
@@ -470,10 +470,10 @@ visibility: hidden; line-height: 0; height: 0;}*/
 --------------------------*/
 
 /* service section */
-.service-block { height: 350px; }
+.service-block { }
 .service-img { }
 .service-img img { width: 100%; }
-/*.service-content { text-align: center; }*/
+.service-content { text-align: center; }
 .service-title { color: #2f2f2f; font-weight: 700; line-height: 24px; text-transform: uppercase; }
 .service-icon { font-size: 115px; text-align: center; }
 .service-icon img { }
@@ -537,7 +537,7 @@ visibility: hidden; line-height: 0; height: 0;}*/
 /*-------------------------
   9.8 Pricing
 ---------------------------*/
-.pricing-block { }
+.pricing-block { align-content: center }
 .pricing-head { background-color: #c5f016; padding: 30px; }
 .pricing-title { font-size: 16px; color: #647a0b; font-weight: 600; line-height: 24px; text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0px; }
 .price { font-size: 66px; color: #2f2f2f; font-weight: 500; }
@@ -576,7 +576,7 @@ visibility: hidden; line-height: 0; height: 0;}*/
 .post-header { position: absolute; bottom: 0px; padding: 40px; }
 .post-title { line-height: 30px; font-size: 20px; font-weight: 500; margin-bottom: 20px; }
 .post-img { position: relative; }
-.post-sticky { background: url(../images/sticky.png) no-repeat; position: absolute; right: 35px; bottom: 35px; width: 29px; height: 29px; }
+.post-sticky { background: url(../static/images/sticky.png) no-repeat; position: absolute; right: 35px; bottom: 35px; width: 29px; height: 29px; }
 .post-meta { font-size: 12px; line-height: 24px; text-transform: uppercase; font-weight: 500; color: #fff; }
 .meta-date { }
 .meta-date i { margin-right: 5px; font-size: 15px; }
@@ -694,7 +694,7 @@ visibility: hidden; line-height: 0; height: 0;}*/
 /*--------------------------------
  Extra Plugin CSS - Back to top  
 ---------------------------------*/
-.cd-top { display: inline-block; height: 40px; width: 40px; position: fixed; bottom: 40px; right: 10px; overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(38, 38, 38, 100) url(../images/cd-top-arrow.svg) no-repeat center 50%; visibility: hidden; opacity: 0; -webkit-transition: opacity .3s 0s, visibility 0s .3s; -moz-transition: opacity .3s 0s, visibility 0s .3s; transition: opacity .3s 0s, visibility 0s .3s; border-radius: 10px; }
+.cd-top { display: inline-block; height: 40px; width: 40px; position: fixed; bottom: 40px; right: 10px; overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(38, 38, 38, 100) url(../static/images/cd-top-arrow.svg) no-repeat center 50%; visibility: hidden; opacity: 0; -webkit-transition: opacity .3s 0s, visibility 0s .3s; -moz-transition: opacity .3s 0s, visibility 0s .3s; transition: opacity .3s 0s, visibility 0s .3s; border-radius: 10px; }
 .cd-top.cd-is-visible, .cd-top.cd-fade-out, .no-touch .cd-top:hover { -webkit-transition: opacity .3s 0s, visibility 0s 0s; -moz-transition: opacity .3s 0s, visibility 0s 0s; transition: opacity .3s 0s, visibility 0s 0s; }
 .cd-top.cd-is-visible {    /* the button becomes visible */
 visibility: visible; opacity: 1; }
@@ -732,4 +732,11 @@ opacity: .5; }
 .widget-tags a { padding: 7px 7px; font-size: 10px; line-height: 8px; }
 .hero-caption { padding-top: 50px; padding-bottom: 50px; }
 .hero-title { font-size: 32px; line-height: 45px; }
+}
+
+/* 추가 css */
+.button.is-like {
+    background-color: #e8344e;
+    border-color: transparent;
+    color: #fff !important;
 }
