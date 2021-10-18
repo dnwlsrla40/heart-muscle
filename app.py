@@ -124,6 +124,48 @@ def login_page():
     return render_template('login.html')
 
 
+# # 회원가입 ID와 비밀번호를 받아서 DB에 저장
+# @app.route('/login/sign_up', methods=['POST'])
+# def sign_up():
+#     userid_receive = request.form['userid_give']
+#     password_receive = request.form['password_give']
+#     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+#     doc = {
+#         "userid": userid_receive,
+#         "password": password_hash
+#     }
+#     request_url = "https://www.googleapis.com/youtube/v3/search?"
+#
+#     for option in optionParams:
+#         request_url += option + "=" + optionParams[option] + "&"
+#
+#     data = requests.get(request_url)
+#     jsonized_data = data.json()
+#     comments_list = {
+#         "items": jsonized_data["items"]
+#     }
+#     return jsonify(comments_list)
+#
+# # category에서 나눠진 video 가져오기
+# @app.route('/api/video/<video_id>', methods=['GET'])
+# def get_video(video_id):
+
+
+###################### main 관련 def ########################
+
+# main 페이지 라우팅
+@app.route('/main', methods=['GET'])
+def main():
+    return render_template('main.html')
+
+###################### 로그인 & 회원가입 관련 def ###############
+
+# 로그인 페이지 라우팅
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+
 # 회원가입 ID와 비밀번호를 받아서 DB에 저장
 @app.route('/login/sign_up', methods=['POST'])
 def sign_up():
@@ -532,7 +574,6 @@ def posting_list():
     print("result:", image)
 
     return jsonify(posts, image)
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
