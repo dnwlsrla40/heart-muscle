@@ -35,80 +35,9 @@
 </head>
 
 <body class="animsition">
-    <div class="top-bar">
-        <!-- top-bar -->
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 hidden-sm hidden-xs bdr">
-                    <div class="time-info">
-                        <p class="time-text">Mon - Sat : 6 am-9pm - Sun : 8am-6pm</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-4 hidden-xs bdr">
-                    <div class="call-info">
-                        <!-- call-info -->
-                        <p class="call-no">+1 (800)-123-456 / 856</p>
-                    </div>
-                    <!-- /.call-info -->
-                </div>
-                <div class="col-md-3 col-sm-4 hidden-xs bdr">
-                    <div class="mail-info">
-                        <p class="mail-text">fitnessgym@gmail.com</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-12">
-                    <div class="top-search">
-                        <div class="custom-search-input">
-                            <div class="input-group  ">
-                                <input type="text" class="  search-query form-control" placeholder="Search">
-                                <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
-                        </span> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="page-header">
         <div class="header">
-            <!-- navigation -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="logo">
-                            <a href="index.html"><img src="../static/images/logo.png" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-md-9 col-sm-12">
-                        <div class="navigation pull-right" id="navigation">
-                            <ul>
-                                <li class="active"><a href="index.html" title="Home" class="animsition-link">Home</a></li>
-                                <li><a href="classes-list.html" title="Classes" class="animsition-link">Classes List</a>
-                                    <ul>
-                                        <li><a href="classes-list.html" title="Classes List">classes List</a></li>
-                                        <li><a href="classes-detail.html" title="Classes Detail">classes Detail</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog-default.html" title="Blog" class="animsition-link">Blog Default</a>
-                                    <ul>
-                                        <li><a href="blog-default.html" title="Blog" class="animsition-link">Blog Default</a></li>
-                                        <li><a href="blog-single.html" title="Blog Single" class="animsition-link">Blog Single</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="testimonial.html" title="Features" class="animsition-link">Features</a>
-                                    <ul>
-                                        <li><a href="testimonial.html" title="Testimonial" class="animsition-link">Testimonial</a></li>
-                                        <li><a href="pricing.html" title="Pricing" class="animsition-link">Pricing</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html" title="Contact Us" class="animsition-link">Contact</a> </li>
-                                <li><a href="style-guide.html" title="Style Guide" class="animsition-link">style guide</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include './common/header.html'  ignore missing %}
         </div>
         <div class="container">
             <div class="row">
@@ -137,63 +66,7 @@
           </div>
             </div>
         </div>
-    <div class="footer space-medium">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                    <div class="footer-logo mb30">
-                        <img src="../static/images/logo.png" class="" alt="Fitness Website Template">
-                    </div>
-                </div>
-                <div class="col-lg-offset-1 col-lg-3 col-md-offset-1 col-md-3 col-sm-3 col-xs-12">
-                    <div class="footer-widget mb30">
-                        <h3 class="footer-title">Contact Info</h3>
-                        <ul class="listnone">
-                            <li>
-                                <address>
-                                    2687 Broadcast Drive Monroe,
-                                    <br> NC 28112
-                                </address>
-                            </li>
-                            <li>+1 (800)-123-456 </li>
-                            <li>fitnessgym@gmail.com</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-offset-1 col-lg-2 col-md-offset-1 col-md-2 col-sm-3 col-xs-12">
-                    <div class="footer-widget mb30">
-                        <h3 class="footer-title">Quick Links</h3>
-                        <ul class="listnone">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="classes.html">Classes</a></li>
-                            <li><a href="blog-default.html">News</a></li>
-                            <li><a href="pricing.html">Pricing</a></li>
-                            <li><a href="testimonial.html">Testimonial</a></li>
-                            <li><a href="contact.html">Contactus</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    <div class="footer-widget mb30">
-                        <h3 class="footer-title">Connect With us</h3>
-                        <div class="footer-social"> <a href="#"><i class="fa fa-twitter"></i></a> <a href="#" class="active"><i class="fa fa-facebook"></i> </a>
-                            <a href="#"> <i class="fa fa-google-plus"></i> </a>
-                            <a href="#"> <i class="fa fa-pinterest"></i> </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="tiny-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    Shared by <i class="fa fa-love"></i><a href="https://bootstrapthemes.co">BootstrapThemes</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include './common/footer.html'  ignore missing %}
     <!-- back to top icon -->
     <a href="#0" class="cd-top" title="Go to top">Top</a>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
