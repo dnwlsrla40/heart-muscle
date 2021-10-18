@@ -19,6 +19,8 @@
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 #
 #
+#
+#
 # ###################### new Template 관련 def ########################
 #
 # @app.route('/', methods=['GET'])
@@ -136,7 +138,8 @@
 #     token_receive = request.cookies.get('mytoken')
 #     try:
 #         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         boards = list(db.boards.find({}).sort("date", -1).limit(20))
+#         # boards = list(db.boards.find({}).sort("date", -1).limit(20))
+#         boards = list(db.boards.find({}).sort("date", -1))
 #         for board in boards:
 #             board["_id"] = str(board["_id"])
 #             board["count_heart"] = db.likes.count_documents({"board_id": board["_id"], "type": "heart"})
@@ -202,11 +205,14 @@
 # # board 하나 가져오는 기능
 # @app.route('/api/board/post', methods=['GET'])
 # def get_board_detail():
+#     token_receive = request.cookies.get('mytoken')
+#     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#     login_id = payload["id"]
+#
 #     idx_receive = int(request.args.get('idx_give'))
 #     data = db.boards.find_one({'idx': idx_receive}, {'_id': False})
 #     print("result:", data)
-#     # return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
-#     return jsonify({"data": data})
+#     return jsonify({"data": data, "login_id": login_id})
 #
 #
 # # board create 화면에 찍어주는 html 라우팅

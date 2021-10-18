@@ -22,6 +22,8 @@ function update_board() {
             let content = boards['content']
             let created_at = boards['created_at']
             let idx = boards['idx']
+            let login_id = response["login_id"]
+            console.log(login_id)
             console.log(idx)
 
 
@@ -51,13 +53,22 @@ function update_board() {
                                     <p>${content}</p>
                                    </div>                        
                                 </div>
-                                 <div>
-                                    <button onclick="window.location.href='/board-list'" type="button" class="btn btn-outline-danger"><i class="fas fa-list"></i></button>
-                                    <button class="btn btn-outline-danger" onclick="show_update(event, '${idx}')"><i class="fas fa-edit"></i></button>
-                                    <button onclick="delete_board(('${idx}'))" type="button" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                <div>
+                                    
                                 </div>
                             </form>`
             $('#read-box').append(temp_html)
+
+
+            if (userid === login_id) {
+                $('#list-box').remove()
+                let temp_html = `<div>
+                                    <button id="list-box" onclick="window.location.href='/board-list'" type="button" class="btn btn-outline-danger"><i class="fas fa-list"></i></button>
+                                    <button class="btn btn-outline-danger" onclick="show_update(event, '${idx}')"><i class="fas fa-edit"></i></button>
+                                    <button onclick="delete_board(('${idx}'))" type="button" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </div>`
+                $('#update').append(temp_html)
+            }  else {}
         }
 
     })

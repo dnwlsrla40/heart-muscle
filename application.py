@@ -173,8 +173,7 @@ def get_posts():
         print(board["heart_by_me"])
         print(board["count_heart"])
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("login_page"))
+
 
 
 # QnA 조회수 증가
@@ -220,11 +219,14 @@ def like_star():
 # QnA 하나 가져오는 기능
 @application.route('/api/board/post', methods=['GET'])
 def get_board_detail():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    login_id = payload["id"]
+
     idx_receive = int(request.args.get('idx_give'))
     data = db.boards.find_one({'idx': idx_receive}, {'_id': False})
     print("result:", data)
-    # return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
-    return jsonify({"data": data})
+    return jsonify({"data": data, "login_id": login_id})
 
 
 # QnA 작성(저장) 기능
