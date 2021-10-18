@@ -271,6 +271,8 @@ function posting_db_update() {
             alert(response["msg"]);
             console.log(response)
             window.location.href = '/posting/detail?idx=' + idx
+            
+
         }
     })
 }
