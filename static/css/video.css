@@ -92,7 +92,7 @@
     width: 100%;
 }
 
-#lv0, #lv1, #lv2, #lv3, #lv4 {
+#back, #chest, #shoulder, #arm, #legs, #easy, #normal, #advanced, #lv0, #lv1, #lv2, #lv3, #lv4, #neck, #waist, #eyes, #wrist, #body{
     width: 100%;
     display: block;
     float: left;
@@ -106,4 +106,8 @@
     width: 80%;
     margin: auto;
     text-align: center;
+}
+
+.service-title {
+    padding-top: 10px;
 }
