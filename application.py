@@ -63,7 +63,7 @@ def get_videos():
 @application.route('/api/videos/category', methods=['GET'])
 def get_videos_by_category():
     category = request.args.get('category')
-    category_videos = list(db.videos.find({'division.category': category}, {'_id': False}))
+    category_videos = list(db.videos.find({'category': category}, {'_id': False}))
     return jsonify(category_videos)
 
 
