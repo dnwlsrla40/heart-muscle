@@ -49,12 +49,10 @@ function getCode() {
             console.log(response)
             let temp_html = ''
             console.log(response[0]['group'])
-            if (response[0]['group'] == 'age') {
-                temp_html += `<p>나이를 선택해주세요</p>`
-            } else if (response[0]['group'] == 'gender') {
-                temp_html += `<p>성별을 선택해주세요</p>`
+            if (response[0]['group'] == 'experience') {
+                temp_html += `<p>운동을 해본 경험이 있을까요?</p>`
             } else if(response[0]['group'] == 'interest'){
-                temp_html += `<p>흥미있는 운동을 선택해주세요</p>`
+                temp_html += `<p>흥미있는 운동이 있나요?</p>`
             }
             $("#select-box").append(temp_html);
             response.forEach(function (code) {

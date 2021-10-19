@@ -7,7 +7,7 @@ $('.sidenav > li').on("click", function () {
         url: '/api/videos/category?category=' + category,
         success: function (response) {
             $('#youtube-box').empty()
-            makeSearchButton()
+            // makeSearchButton()
             console.log(response)
             $('#video-box').empty()
             // makeIndex()
@@ -44,16 +44,16 @@ function makeIndex() {
 //     $('#video-box').append(temp_html)
 // }
 
-function makeSearchButton() {
-    $('.search-box').empty()
-    let temp_html = `<input type="text" class="search-input"
-                           aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <div class="search-button-box">
-                        <button class="search-button" type="button"><i class="fas fa-search"></i></button>
-                    </div>`
-
-    $('.search-box').prepend(temp_html)
-}
+// function makeSearchButton() {
+//     $('.search-box').empty()
+//     let temp_html = `<input type="text" class="search-input"
+//                            aria-label="Recipient's username" aria-describedby="basic-addon2">
+//                     <div class="search-button-box">
+//                         <button class="search-button" type="button"><i class="fas fa-search"></i></button>
+//                     </div>`
+//
+//     $('.search-box').prepend(temp_html)
+// }
 
 function makeLvDiv() {
     let temp_html = `<div id="lv0">
