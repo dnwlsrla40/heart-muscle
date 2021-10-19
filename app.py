@@ -17,25 +17,21 @@ client = MongoClient(os.environ.get("MONGO_DB_PATH"))
 
 db = client.dbMuscle
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "MUSCLE"
 
 ###################### 10-19 추가 코드 ########################
-# 추천 비디오 가져오기
-@app.route('/api/videos/suggestion', methods=['GET'])
-def get_suggestion_videos():
-    info = request.args.get('data')
-    # print("info: ", info)
-    # print(info.split("-")[2])
-    # print("interest: ", info.split('-')[2][:1])
-    experience = "experience-" + info.split('-')[1][:1]
-    interest = "interest-" + info.split('-')[2][:1]
-    videos = list(db.question_videos.find({"experience": experience, "interest": interest}, {'_id': False}))
-    print("videos: ", videos)
-    return jsonify(videos)
-    # return
+@app.route('/login/logout', methods=['GET'])
+def login_logout():
+
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    login_id = payload["id"]
+
+    return jsonify(login_id)
+
 
 ###################### new Template 관련 def ########################
-
 @app.route('/', methods=['GET'])
 def home():
     return render_template('index.html')
@@ -73,11 +69,23 @@ def get_videos():
     return jsonify(videos)
 
 
+# 카테고리 별로 videos 가져오기
 @app.route('/api/videos/category', methods=['GET'])
 def get_videos_by_category():
     category = request.args.get('category')
-    category_videos = list(db.videos.find({'division.category': category}, {'_id': False}))
+    category_videos = list(db.videos.find({'category': category}, {'_id': False}))
     return jsonify(category_videos)
+
+
+# 추천 비디오 가져오기
+@app.route('/api/videos/suggestion', methods=['GET'])
+def get_suggestion_videos():
+    info = request.args.get('data')
+    experience = "experience-" + info.split('-')[1][:1]
+    interest = "interest-" + info.split('-')[2][:1]
+    videos = list(db.question_videos.find({"experience": experience, "interest": interest}, {'_id': False}))
+    return jsonify(videos)
+
 
 ###################### 로그인 & 회원가입 관련 def ###############
 
@@ -174,7 +182,8 @@ def get_posts():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        boards = list(db.boards.find({}).sort("date", -1).limit(20))
+        # boards = list(db.boards.find({}).sort("date", -1).limit(20))
+        boards = list(db.boards.find({}).sort("date", -1))
         for board in boards:
             board["_id"] = str(board["_id"])
             board["count_heart"] = db.likes.count_documents({"board_id": board["_id"], "type": "heart"})
@@ -187,8 +196,8 @@ def get_posts():
         print(board["heart_by_me"])
         print(board["count_heart"])
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "boards": boards})
-    except:
-        return
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("login_page"))
 
 
 # QnA 조회수 증가
@@ -286,6 +295,7 @@ def update_board():
     print(content_data)
     return jsonify({'content_data': content_data})
 
+
 # QnA 수정 기능
 @app.route('/api/board-update', methods=['POST'])
 def update_board_content():
@@ -323,6 +333,7 @@ def posting_detail_html():
 @app.route('/posting/list')
 def posting_list_html():
     return render_template('posting-list.html')
+
 
 ## 피드 수정 화면
 @app.route('/posting/update')

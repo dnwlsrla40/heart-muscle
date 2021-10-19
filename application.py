@@ -128,6 +128,16 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+# login check
+@application.route('/login/logout', methods=['GET'])
+def login_logout():
+
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    login_id = payload["id"]
+
+    return jsonify(login_id)
+
 
 ###################### 득근 QnA ########################
 
@@ -531,7 +541,6 @@ def posting_db_update():
     db.posting.update_one({"idx": int(idx_receive)}, {"$set": {'dinner': dinner_receive}})
 
     return jsonify({'msg': '수정완료!'})
-
 
 ## 피드 좋아요
 @application.route('/posting/update/like', methods=['POST'])
