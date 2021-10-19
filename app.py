@@ -18,7 +18,7 @@ client = MongoClient(os.environ.get("MONGO_DB_PATH"))
 db = client.dbMuscle
 
 # SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = "MUSCLE"
+# 키 삭제
 
 # ###################### 10-19 추가 코드 ########################
 # @app.route('/login/logout', methods=['GET'])
