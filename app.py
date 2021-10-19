@@ -20,15 +20,12 @@ db = client.dbMuscle
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 SECRET_KEY = "MUSCLE"
 
-###################### 10-19 추가 코드 ########################
-@app.route('/login/logout', methods=['GET'])
-def login_logout():
-
-    token_receive = request.cookies.get('mytoken')
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    login_id = payload["id"]
-
-    return jsonify(login_id)
+# ###################### 10-19 추가 코드 ########################
+# @app.route('/login/logout', methods=['GET'])
+# def login_logout():
+#     status = request.args.get('status')
+#
+#     return jsonify(login_id)
 
 
 ###################### new Template 관련 def ########################
