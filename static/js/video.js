@@ -10,28 +10,22 @@ $('.sidenav > li').on("click", function () {
             // makeSearchButton()
             console.log(response)
             $('#video-box').empty()
-            // makeIndex()
+            if(category == "home-training"){
+                makeLvDiv()
+            } else if(category == "weight") {
+                makePartDiv()
+            } else if(category == "yoga-pilates") {
+                makeClassDiv()
+            } else if(category == "stretching") {
+                makeExerDiv()
+            }
             // makeTagButton()
-            makeLvDiv()
             response.forEach(function (video) {
                 makeCategoryVideo(video)
             })
         }
     })
 })
-
-function makeIndex() {
-    let temp_html = `<div class="index">
-                        <ul>
-                            <li><a href="#lv0">Lv0</a></li>
-                            <li><a href="#lv1">Lv1</a></li>
-                            <li><a href="#lv2">Lv2</a></li>
-                            <li><a href="#lv3">Lv3</a></li>
-                            <li><a href="#lv4">Lv4</a></li>
-                        </ul>
-                    </div>`
-    $('#video-box').append(temp_html)
-}
 
 // function makeTagButton() {
 //     let temp_html = `<div class="button-box">
@@ -79,8 +73,76 @@ function makeLvDiv() {
     $('#video-box').append(temp_html)
 }
 
+function makePartDiv() {
+    let temp_html = `<div id="back">
+                        <h2>등</h2>
+                        <hr>
+                    </div>
+                    <div id="chest">
+                        <h2>가슴</h2>
+                        <hr>
+                    </div>
+                    <div id="shoulder">
+                        <h2>어깨</h2>
+                        <hr>
+                    </div>
+                    <div id="arm">
+                        <h2>팔</h2>
+                        <hr>
+                    </div>
+                    <div id="abs">
+                        <h2>복근</h2>
+                        <hr>
+                    </div>
+                    <div id="legs">
+                        <h2>다리</h2>
+                        <hr>
+                    </div>`
+    $('#video-box').append(temp_html)
+}
+
+function makeClassDiv() {
+    let temp_html = `<div id="easy">
+                        <h2>초급</h2>
+                        <hr>
+                    </div>
+                    <div id="normal">
+                        <h2>중급</h2>
+                        <hr>
+                    </div>
+                    <div id="advanced">
+                        <h2>고급</h2>
+                        <hr>
+                    </div>`
+    $('#video-box').append(temp_html)
+}
+
+function makeExerDiv() {
+    let temp_html = `<div id="neck">
+                        <h2>목</h2>
+                        <hr>
+                    </div>
+                    <div id="waist">
+                        <h2>허리</h2>
+                        <hr>
+                    </div>
+                    <div id="eyes">
+                        <h2>눈</h2>
+                        <hr>
+                    </div>
+                    <div id="wrist">
+                        <h2>손목, 발목</h2>
+                        <hr>
+                    </div>
+                    <div id="body">
+                        <h2>전신</h2>
+                        <hr>
+                    </div>`
+    $('#video-box').append(temp_html)
+}
+
 function makeCategoryVideo(video) {
-    let Lv = "lv" + video['division']['Lv']
+    let category_detail = video['category_detail']
     let title = ''
     if(video['title'].length > 80){
          title = video['title'].substr(0,40) + "..."
@@ -98,7 +160,7 @@ function makeCategoryVideo(video) {
                             </div>
                         </div>
                     </div>`
-    $('#' + Lv).append(temp_html)
+    $('#' + category_detail).append(temp_html)
 }
 
 function getVideoDetail(video_id) {
