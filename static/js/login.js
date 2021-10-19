@@ -143,3 +143,7 @@ function check_dup() {
         }
     });
 }
+
+function go_main_page() {
+    window.location.href = "/"
+}
