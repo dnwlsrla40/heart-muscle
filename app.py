@@ -11,7 +11,7 @@ from pymongo import MongoClient
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-# client = MongoClient('mongodb://test:test@localhost', 27017)
+#키 삭제
 # client = MongoClient("mongodb://localhost", 27017)
 client = MongoClient(os.environ.get("MONGO_DB_PATH"))
 
